@@ -57,3 +57,7 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Website Travel
+
+Pada website berisikan berita dan informasi terbaru tentang gunung di seluruh Indonesia dimana para pendaki dapat membooking secara online untuk mendaki dan dapat meminjam beberapa alat outdoor lainnya
