@@ -23,7 +23,43 @@
             <div class="mt-6 text-gray-700 leading-relaxed">
                 {{ $destination->description }}
             </div>
+
+            {{-- WADAH PETA DITAMBAHKAN DI SINI --}}
+            @if($destination->latitude && $destination->longitude)
+                <div class="mt-8 border-t border-gray-100 pt-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Lokasi di Peta</h2>
+                    <div id="map" class="w-full h-96 rounded-xl shadow border border-gray-200 relative z-0"></div>
+                </div>
+            @endif
         </div>
     </div>
 
-@endsection
+@endsection {{-- Section Content Ditutup Di Sini --}}
+
+
+{{-- Script untuk menjalankan Leaflet --}}
+@push('scripts')
+@if($destination->latitude && $destination->longitude)
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 1. Ambil koordinat dari database
+        var lat = {{ $destination->latitude }};
+        var lng = {{ $destination->longitude }};
+
+        // 2. Inisialisasi peta dan pusatkan ke koordinat destinasi
+        var map = L.map('map').setView([lat, lng], 13); // Angka 13 adalah level zoom
+
+        // 3. Tambahkan layer peta dari OpenStreetMap
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        // 4. Tambahkan Marker (Pin)
+        L.marker([lat, lng]).addTo(map)
+            .bindPopup("<b>{{ $destination->name }}</b><br>{{ $destination->location }}") // Teks saat pin diklik
+            .openPopup();
+    });
+</script>
+@endif
+@endpush {{-- Push Scripts Ditutup Di Sini --}}
