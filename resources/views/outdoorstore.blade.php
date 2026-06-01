@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Toko Outdoor')
+@section('title', 'Outdoor Store')
 
 @push('styles')
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -671,7 +671,7 @@
         right: 30px;
         width: 60px;
         height: 60px;
-        background: linear-gradient(135deg, var(--sky) 0%, #0284c7 100%);
+        background: linear-gradient(135deg, var(--sky) 0%, #0094df 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -930,12 +930,12 @@
     <section class="hero">
         <div class="hero-grid">
             <div>
-                <div class="badge">✨ Outdoor Gear • Hiking Essentials</div>
+                <div class="badge">✨ OutdoorStore • Alat Hiking</div>
                 <h1>Perlengkapan Hiking Premium untuk <span>Petualangan</span> Tak Terlupakan</h1>
-                <p>Koleksi perlengkapan hiking dan pakaian outdoor terbaik—desain modern, fungsi premium, dan kenyamanan maksimal untuk setiap jalur dan ketinggian.</p>
+                <p>Koleksi perlengkapan hiking dan pakaian outdoor terbaik dan berkualitas, serta dengan fungsi yang premium, dan kenyamanan maksimal untuk setiap jalur dan ketinggian.</p>
                 <div class="btn-group">
                     <a href="#katalog" class="btn btn-primary">🔍 Lihat Katalog</a>
-                    <a href="#kenapa" class="btn btn-secondary">Kenapa Kami? ↗</a>
+                    <a href="#kenapa" class="btn btn-secondary">Kenapa harus Kami? ↗</a>
                 </div>
                 <div class="stats">
                     <div class="stat">
@@ -954,26 +954,26 @@
             </div>
 
             <div class="featured">
-                <div class="featured-title">🔥 Trending Minggu Ini</div>
+                <div class="featured-title">🔥 Barang Trending Minggu Ini</div>
                 <div class="featured-item">
                     <div class="dot" style="background:#0ea5e9"></div>
                     <div>
-                        <p>Ransel 45L TrailPro</p>
-                        <span>Tahan air, bantalan ergonomis</span>
+                        <p>Sepatu Hiking The North Face Vectic Taraval</p>
+                        <span>Menggunakan teknologi untuk meredam benturan dengan baik</span>
                     </div>
                 </div>
                 <div class="featured-item">
                     <div class="dot" style="background:#10b981"></div>
                     <div>
-                        <p>Jaket Softshell WindTech</p>
-                        <span>Windproof, 4-way stretch</span>
+                        <p>The North Face Man Alta Vista Jacket</p>
+                        <span>Menggunakan material 100% recycled DryVent yang sepenuhnya tahan air dan ramah lingkungan</span>
                     </div>
                 </div>
                 <div class="featured-item">
                     <div class="dot" style="background:#a78bfa"></div>
                     <div>
-                        <p>Tenda Solo Alpine</p>
-                        <span>Ultralight 1.4kg, all-season</span>
+                        <p>Tenda The North Face Stormbreak</p>
+                        <span>tenda ultralight dan tahan air untuk kegiatan camping, trekking, atau traveling</span>
                     </div>
                 </div>
                 <div class="promo">🚚 Gratis ongkir Rp 500K+ hari ini</div>
@@ -1020,7 +1020,7 @@
                             👕
                             <span class="card-badge emerald">Pakaian</span>
                         @else
-                            🎒
+                            ⛺
                             <span class="card-badge">Alat</span>
                         @endif
                         <button class="card-heart" onclick="toggleWish(this)">
@@ -1179,7 +1179,7 @@
 
     function toggleWish(btn) {
         btn.classList.toggle('active');
-        btn.style.background = btn.classList.contains('active') ? '#fbbf24' : 'white';
+        btn.style.background = btn.classList.contains('active') ? '#fb2424' : 'white';
         btn.style.color = btn.classList.contains('active') ? 'white' : 'currentColor';
     }
 
