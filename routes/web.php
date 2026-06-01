@@ -46,7 +46,7 @@ Route::get('/toko', function () {
 
                 'stock' => 10,
 
-                'category' => 'hiking',
+                'category' => 'Alat hiking',
 
             ],
 
@@ -60,7 +60,7 @@ Route::get('/toko', function () {
 
                 'stock' => 12,
 
-                'category' => 'hiking',
+                'category' => 'Alat hiking',
 
             ],
 
@@ -74,7 +74,7 @@ Route::get('/toko', function () {
 
                 'stock' => 24,
 
-                'category' => 'hiking',
+                'category' => 'Alathiking',
 
             ],
 
@@ -88,7 +88,7 @@ Route::get('/toko', function () {
 
                 'stock' => 35,
 
-                'category' => 'hiking',
+                'category' => 'Alat hiking',
 
             ],
 
@@ -102,7 +102,7 @@ Route::get('/toko', function () {
 
                 'stock' => 10,
 
-                'category' => 'hiking',
+                'category' => 'Alat hiking',
 
             ],
 
@@ -116,7 +116,7 @@ Route::get('/toko', function () {
 
                 'stock' => 50,
 
-                'category' => 'hiking',
+                'category' => 'Alat hiking',
 
             ],
 
