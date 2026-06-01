@@ -8,9 +8,14 @@
     <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-2xl p-16 text-center mb-12">
         <h1 class="text-5xl font-bold mb-4">Jelajahi Dunia Bersama Kami</h1>
         <p class="text-xl text-blue-100 mb-8">Temukan destinasi terbaik, produk travel, dan inspirasi perjalanan</p>
-        <a href="/destinasi" class="bg-white text-blue-700 font-bold px-8 py-3 rounded-full hover:bg-blue-50">
-            Mulai Jelajahi →
-        </a>
+        <div class="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <a href="/destinasi" class="rounded-full bg-white px-8 py-3 text-sm font-bold text-blue-700 transition hover:bg-blue-50">
+                Mulai Jelajahi →
+            </a>
+            <a href="/toko" class="rounded-full bg-slate-950 px-8 py-3 text-sm font-bold text-white transition hover:bg-slate-800">
+                Kunjungi Toko Outdoor →
+            </a>
+        </div>
     </div>
 
     {{-- Section Destinasi Unggulan --}}

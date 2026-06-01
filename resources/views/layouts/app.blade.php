@@ -413,6 +413,7 @@
             .navbar-inner { padding: 0 1rem; }
         }
     </style>
+    @stack('styles')
 </head>
 <body>
 
