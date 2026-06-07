@@ -112,7 +112,7 @@ function saveCart() {
 
 function updateCartUI() {
     const total = cart.reduce((sum, item) => sum + item.qty, 0);
-    document.getElementById('cartCountBadge').textContent = total;
+    // document.getElementById('cartCountBadge').textContent = total;
     
     if (total > 0) {
         document.getElementById('cartCount').style.display = 'flex';
