@@ -5,6 +5,9 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\PaymentNotificationController;
+use App\Http\Controllers\TransactionController;
 use App\Models\Product;
 
 // Halaman utama
@@ -52,5 +55,20 @@ Route::middleware(['auth'])->group(function () {
         return 'Halaman Keranjang - coming soon';
     });
 });
+
+// Route untuk proses checkout dan pembayaran (wajib login)
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+    
+    // Tambahkan route riwayat transaksi di sini
+    Route::get('/riwayat-transaksi', [TransactionController::class, 'index'])->name('transactions.history');
+});
+
+
+Route::post('/midtrans/callback', [PaymentNotificationController::class, 'handle']);
 
 require __DIR__.'/auth.php';

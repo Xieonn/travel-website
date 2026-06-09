@@ -3,21 +3,28 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 class Transaction extends Model
 {
-    public function up(): void
-{
-    Schema::create('transactions', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('user_id')->constrained()->onDelete('cascade');
-        $table->foreignId('product_id')->constrained()->onDelete('cascade');
-        $table->integer('quantity');
-        $table->decimal('total_price', 10, 2);
-        $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
-        $table->timestamps();
-    });
-}
+    // Mengizinkan Laravel untuk mengisi kolom-kolom ini secara massal (Mass Assignment)
+    protected $fillable = [
+        'user_id', 
+        'order_id', 
+        'product_id', 
+        'quantity', 
+        'total_price', 
+        'status'
+    ];
+
+    // Relasi: Setiap transaksi dimiliki oleh satu User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // Relasi: Setiap transaksi berisi satu Product
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }
