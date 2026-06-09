@@ -35,5 +35,32 @@ class DestinationSeeder extends Seeder
             'latitude' => -2.030556,
             'longitude' => 101.554167,
         ]);
+
+        Destination::create([
+            'name' => 'Candi Muaro Jambi',
+            'description' => 'Kompleks percandian agama Hindu-Buddha terluas di Asia Tenggara yang membentang di sepanjang tepi Sungai Batanghari. Tempat ini merupakan situs bersejarah peninggalan Kerajaan Sriwijaya dan Melayu yang sangat terawat.',
+            'location' => 'Muaro Jambi, Jambi',
+            'category' => 'Budaya',
+            'latitude' => -1.474444,
+            'longitude' => 103.666944,
+        ]);
+
+        Destination::create([
+            'name' => 'Geopark Merangin',
+            'description' => 'Taman bumi yang menawarkan wisata arung jeram (rafting) kelas dunia di Sungai Batang Merangin. Selain memacu adrenalin, Anda juga bisa melihat langsung fosil flora dan fauna berusia ratusan juta tahun di sepanjang tebing sungai.',
+            'location' => 'Kabupaten Merangin, Jambi',
+            'category' => 'Alam',
+            'latitude' => -2.062000,
+            'longitude' => 102.164500,
+        ]);
+
+        Destination::create([
+            'name' => 'Air Terjun Telun Berasap',
+            'description' => 'Air terjun megah dengan debit air yang sangat deras. Percikan air yang jatuh dari ketinggian menciptakan kabut tebal yang menyerupai asap putih, dan seringkali membiaskan cahaya matahari menjadi pelangi yang indah.',
+            'location' => 'Kabupaten Kerinci, Jambi',
+            'category' => 'Air Terjun',
+            'latitude' => -1.696111,
+            'longitude' => 101.277778,
+        ]);
     }
 }
