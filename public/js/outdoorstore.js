@@ -67,13 +67,15 @@ function toggleWish(btn) {
 }
 
 // ── SHOPPING CART ──
-function addToCart(btn, name, price) {
-    const existing = cart.find(item => item.name === name);
+// Tambahkan parameter 'id' di depan 'name'
+function addToCart(btn, id, name, price) {
+    const existing = cart.find(item => item.id === id); // Cari berdasarkan ID sekarang, lebih akurat
     
     if (existing) {
         existing.qty++;
     } else {
-        cart.push({ name, price, qty: 1 });
+        // Simpan id ke dalam objek keranjang
+        cart.push({ id, name, price, qty: 1 }); 
     }
     
     saveCart();
@@ -176,7 +178,47 @@ function checkout() {
         alert('Keranjang Anda kosong');
         return;
     }
-    alert('Fitur checkout sedang dikembangkan.\n\nTotal barang: ' + cart.reduce((sum, item) => sum + item.qty, 0) + '\nTotal harga: Rp ' + new Intl.NumberFormat('id-ID').format(cart.reduce((sum, item) => sum + (item.price * item.qty), 0)));
+
+    // 1. Hitung total harga dari keranjang
+    const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+    // 2. Ambil token CSRF dari tag meta (Wajib untuk Laravel)
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    if (!csrfToken) {
+        alert('Keamanan aplikasi (CSRF Token) tidak ditemukan. Gagal melanjutkan checkout.');
+        return;
+    }
+
+    // 3. Buat elemen form secara dinamis (Virtual Form)
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/checkout'; // Pastikan URL ini sesuai dengan route di web.php Anda
+
+    // 4. Tambahkan input untuk CSRF Token
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = '_token';
+    csrfInput.value = csrfToken;
+    form.appendChild(csrfInput);
+
+    // 5. Tambahkan input untuk Total Harga
+    const priceInput = document.createElement('input');
+    priceInput.type = 'hidden';
+    priceInput.name = 'total_price';
+    priceInput.value = totalPrice;
+    form.appendChild(priceInput);
+
+    // [Opsional] Jika Anda ingin mengirim detail barang ke backend, Anda juga bisa mengirim array cart
+    const cartInput = document.createElement('input');
+    cartInput.type = 'hidden';
+    cartInput.name = 'cart_items';
+    cartInput.value = JSON.stringify(cart);
+    form.appendChild(cartInput);
+
+    // 6. Masukkan form ke dalam body dokumen dan submit
+    document.body.appendChild(form);
+    form.submit();
 }
 
 // Initialize
