@@ -9,6 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="{{ asset('css/outdoorstore.css') }}">
+
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @endpush
 
 @section('content')
@@ -134,12 +136,16 @@
                     <p class="card-desc">{{ $product->description ?? 'Perlengkapan outdoor premium' }}</p>
                     <div class="card-footer">
                         <span class="stock">Stok {{ $product->stock ?? 0 }}</span>
-                        <button class="card-btn" data-name="{{ $product->name }}" data-price="{{ $product->price }}" onclick="addToCart(this, this.dataset.name, this.dataset.price)">
-                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <circle cx="9" cy="21" r="1" />
-                                <circle cx="20" cy="21" r="1" />
-                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-                            </svg>
+                        <button class="card-btn" 
+                            data-id="{{ $product->id }}" 
+                            data-name="{{ $product->name }}" 
+                            data-price="{{ $product->price }}" 
+                            onclick="addToCart(this, this.dataset.id, this.dataset.name, this.dataset.price)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <circle cx="9" cy="21" r="1" />
+                            <circle cx="20" cy="21" r="1" />
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                        </svg>
                             Tambah
                         </button>
                     </div>
