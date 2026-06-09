@@ -1,7 +1,7 @@
 @extends('layouts.app')
- 
+
 @section('title', 'Toko Outdoor - Perlengkapan Pendakian')
- 
+
 @push('styles')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -10,14 +10,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/outdoorstore.css') }}">
 @endpush
- 
+
 @section('content')
 <div class="store-page">
- 
+
     {{-- ======================== HERO SECTION ======================== --}}
     <section class="store-hero">
         <div class="hero-overlay"></div>
- 
+
         <div class="hero-copy">
             <span class="hero-kicker">GEAR UP, EXPLORE MORE</span>
             <h1>Perlengkapan Outdoor untuk Pendakian yang Siap Dipakai</h1>
@@ -26,12 +26,12 @@
                 setiap perjalananmu. Tahan banting, nyaman digunakan, dan
                 siap menemani petualangan tanpa batas.
             </p>
- 
+
             <div class="hero-actions">
                 <a href="#produk" class="btn-primary-store">Belanja Sekarang</a>
                 <a href="#kategori" class="btn-ghost-store">Lihat Katalog</a>
             </div>
- 
+
             <div class="hero-trust-badges">
                 <span>✓ Produk Original</span>
                 <span>✓ Garansi Resmi</span>
@@ -39,34 +39,34 @@
                 <span>✓ Pembayaran Aman</span>
             </div>
         </div>
- 
+
         <div class="hero-visual">
             <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1200&q=80" alt="Pendaki gunung dengan perlengkapan outdoor">
- 
+
             {{-- Floating product cards --}}
             <div class="hero-product-card card-hiking-shoes">
                 <div class="hpc-image">
-                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&q=80" alt="Hiking Shoes">
+                    <img src="{{ asset('images/vectiv.webp') }}" alt="Hiking Shoes">
                 </div>
                 <div class="hpc-info">
                     <strong>Hiking Shoes</strong>
                     <span>Grip Maksimal</span>
                 </div>
             </div>
- 
+
             <div class="hero-product-card card-carrier">
                 <div class="hpc-image">
-                    <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=200&q=80" alt="Carrier 60L">
+                    <img src="{{ asset('images/terra45.webp') }}" alt="Carrier 60L">
                 </div>
                 <div class="hpc-info">
                     <strong>Carrier 60L</strong>
                     <span>Tahan Air & Nyaman</span>
                 </div>
             </div>
- 
+
             <div class="hero-product-card card-jacket">
                 <div class="hpc-image">
-                    <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=200&q=80" alt="Jaket Outdoor">
+                    <img src="{{ asset('images/jaket.webp') }}" alt="Jaket Outdoor">
                 </div>
                 <div class="hpc-info">
                     <strong>Jaket Outdoor</strong>
@@ -75,7 +75,7 @@
             </div>
         </div>
     </section>
- 
+
     {{-- ======================== SEARCH & FILTER BAR ======================== --}}
     <section id="kategori" class="search-filter-bar">
         <div class="search-box-wrapper">
@@ -85,7 +85,7 @@
             </svg>
             <input type="text" id="searchInput" placeholder="Cari produk, kategori, atau brand..." oninput="filterProducts()">
         </div>
- 
+
         <div class="sort-wrapper">
             <span class="sort-label">Urutkan:</span>
             <select id="sortInput" onchange="filterProducts()">
@@ -96,7 +96,7 @@
             </select>
         </div>
     </section>
- 
+
     {{-- ======================== CATEGORY TABS ======================== --}}
     <section class="category-tabs">
         <button class="cat-tab active" onclick="setCategory(this, 'all')">Semua</button>
@@ -109,56 +109,61 @@
         <button class="cat-tab" onclick="setCategory(this, 'Aksesoris')">Aksesoris</button>
         <button class="cat-tab" onclick="setCategory(this, 'Sleeping Gear')">Sleeping Gear</button>
     </section>
- 
+
     {{-- ======================== PRODUCT GRID ======================== --}}
     <section id="produk" class="product-section">
         <p id="productCounter" class="product-counter"></p>
- 
+
         <div id="productGrid" class="product-grid">
             @forelse($products as $product)
             @php
-            $image = $product->image;
-            if (!$image) {
-                $image = $fallbackImages[$loop->index % count($fallbackImages)];
-            } elseif (!\Illuminate\Support\Str::startsWith($image, ['http://', 'https://'])) {
-                $image = asset('storage/' . $image);
-            }
- 
+            // --- MULAI KODE GAMBAR MANUAL ---
+            $daftarGambar = [
+            'terra45.webp',
+            'vectiv.webp', // Ganti dengan nama file gambar aslimu
+            'tenda.webp', // Ganti dengan nama file gambar aslimu
+            'jaket.webp', // Ganti dengan nama file gambar aslimu
+            ];
+
+            $namaGambar = $daftarGambar[$loop->index % count($daftarGambar)];
+            $image = asset('images/' . $namaGambar);
+            // --- AKHIR KODE GAMBAR MANUAL ---
+
             $categoryLabel = $product->category ?? 'Outdoor';
             $nameLower = strtolower($product->name);
             if (str_contains($nameLower, 'jaket') || str_contains($nameLower, 'jacket')) {
-                $subCategory = 'Jaket · Outdoor';
+            $subCategory = 'Jaket · Outdoor';
             } elseif (str_contains($nameLower, 'sepatu') || str_contains($nameLower, 'shoe') || str_contains($nameLower, 'boot')) {
-                $subCategory = 'Sepatu · Hiking';
+            $subCategory = 'Sepatu · Hiking';
             } elseif (str_contains($nameLower, 'tenda') || str_contains($nameLower, 'tent')) {
-                $subCategory = 'Tenda · Camping';
+            $subCategory = 'Tenda · Camping';
             } elseif (str_contains($nameLower, 'carrier') || str_contains($nameLower, 'backpack') || str_contains($nameLower, 'tas')) {
-                $subCategory = 'Tas · Carrier';
+            $subCategory = 'Tas · Carrier';
             } elseif (str_contains($nameLower, 'sleeping') || str_contains($nameLower, 'matras')) {
-                $subCategory = 'Sleeping Gear';
+            $subCategory = 'Sleeping Gear';
             } elseif (str_contains($nameLower, 'botol') || str_contains($nameLower, 'bottle') || str_contains($nameLower, 'water')) {
-                $subCategory = 'Botol · Hydration';
+            $subCategory = 'Botol · Hydration';
             } elseif (str_contains($nameLower, 'headlamp') || str_contains($nameLower, 'senter') || str_contains($nameLower, 'lamp')) {
-                $subCategory = 'Aksesoris · Lighting';
+            $subCategory = 'Aksesoris · Lighting';
             } elseif (strtolower($product->category) === 'pakaian') {
-                $subCategory = 'Pakaian · Outdoor';
+            $subCategory = 'Pakaian · Outdoor';
             } else {
-                $subCategory = ucfirst($product->category ?? 'Outdoor');
+            $subCategory = ucfirst($product->category ?? 'Outdoor');
             }
- 
+
             // Generate random rating & sold count for display
             $ratings = ['4.5', '4.6', '4.7', '4.8', '4.9'];
             $rating = $ratings[$loop->index % count($ratings)];
             $sold = [42, 56, 73, 88, 96, 103, 120, 128];
             $soldCount = $sold[$loop->index % count($sold)];
             @endphp
- 
+
             <article class="product-card"
                 data-category="{{ $product->category }}"
                 data-name="{{ strtolower($product->name) }}"
                 data-search="{{ strtolower($product->name . ' ' . $product->description . ' ' . $product->category) }}"
                 data-price="{{ (int) $product->price }}">
- 
+
                 <div class="product-image">
                     <img src="{{ $image }}" alt="{{ $product->name }}" loading="lazy">
                     <button class="wishlist-btn" type="button" onclick="toggleWishlist(this)" aria-label="Tambah ke wishlist">
@@ -170,11 +175,11 @@
                     <span class="product-badge badge-bestseller">BEST SELLER</span>
                     @endif
                 </div>
- 
+
                 <div class="product-content">
                     <h3>{{ $product->name }}</h3>
                     <p class="product-subcategory">{{ $subCategory }}</p>
- 
+
                     <div class="product-pricing">
                         <strong class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</strong>
                         <div class="product-rating">
@@ -183,15 +188,15 @@
                             <span class="rating-count">({{ $soldCount }})</span>
                         </div>
                     </div>
- 
+
                     <div class="product-stock">
                         <span class="stock-dot"></span> Stok: Tersedia
                     </div>
- 
-                    <button type="button" 
+
+                    <button type="button"
                         class="btn-add-cart"
-                        data-id="{{ $product->id }}" 
-                        data-name="{{ addslashes($product->name) }}" 
+                        data-id="{{ $product->id }}"
+                        data-name="{{ addslashes($product->name) }}"
                         data-price="{{ (int) $product->price }}"
                         onclick="addToCart(this, this.dataset.id, this.dataset.name, this.dataset.price)">
                         + Tambah ke Keranjang
@@ -205,7 +210,7 @@
             </div>
             @endforelse
         </div>
- 
+
         <div class="load-more-wrap">
             <button type="button" class="load-more-btn" id="loadMoreBtn">
                 Muat Lebih Banyak Produk
@@ -215,34 +220,40 @@
             </button>
         </div>
     </section>
- 
+
     {{-- ======================== POPULAR PICKS ======================== --}}
     <section class="popular-section">
         <div class="popular-header">
             <h2>Pilihan Populer</h2>
             <a href="#produk" class="see-all-link">Lihat Semua →</a>
         </div>
- 
+
         <div class="popular-carousel-wrapper">
             <button class="carousel-arrow arrow-left" id="popularPrev" type="button" aria-label="Sebelumnya">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
             </button>
- 
+
             <div class="popular-carousel" id="popularCarousel">
                 @foreach($products->take(8) as $product)
                 @php
-                $popularImage = $product->image;
-                if (!$popularImage) {
-                    $popularImage = $fallbackImages[$loop->index % count($fallbackImages)];
-                } elseif (!\Illuminate\Support\Str::startsWith($popularImage, ['http://', 'https://'])) {
-                    $popularImage = asset('storage/' . $popularImage);
-                }
+                // --- MULAI KODE GAMBAR MANUAL UNTUK POPULAR PICKS ---
+                $daftarGambarPopuler = [
+                'terra45.webp',
+                'vectiv.webp',
+                'tenda.webp',
+                'jaket.webp',
+                ];
+
+                $namaGambarPopuler = $daftarGambarPopuler[$loop->index % count($daftarGambarPopuler)];
+                $popularImage = asset('images/' . $namaGambarPopuler);
+                // --- AKHIR KODE GAMBAR MANUAL ---
+
                 $ratings = ['4.5', '4.6', '4.7', '4.8', '4.9'];
                 $rating = $ratings[$loop->index % count($ratings)];
                 @endphp
- 
+
                 <div class="popular-card">
                     <div class="popular-card-image">
                         <img src="{{ $popularImage }}" alt="{{ $product->name }}" loading="lazy">
@@ -258,7 +269,7 @@
                 </div>
                 @endforeach
             </div>
- 
+
             <button class="carousel-arrow arrow-right" id="popularNext" type="button" aria-label="Selanjutnya">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="9 18 15 12 9 6"></polyline>
@@ -266,7 +277,7 @@
             </button>
         </div>
     </section>
- 
+
     {{-- ======================== BENEFITS BAR ======================== --}}
     <section class="benefit-section">
         <div class="benefit-card">
@@ -283,7 +294,7 @@
                 <p>Min. belanja Rp 500.000</p>
             </div>
         </div>
- 
+
         <div class="benefit-card">
             <div class="benefit-icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -296,7 +307,7 @@
                 <p>Produk original & bergaransi</p>
             </div>
         </div>
- 
+
         <div class="benefit-card">
             <div class="benefit-icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -309,7 +320,7 @@
                 <p>Belanja aman & nyaman</p>
             </div>
         </div>
- 
+
         <div class="benefit-card">
             <div class="benefit-icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -322,7 +333,7 @@
             </div>
         </div>
     </section>
- 
+
     {{-- ======================== CART DRAWER ======================== --}}
     <div id="cartDrawer" class="cart-drawer">
         <div class="cart-backdrop" onclick="closeCart()"></div>
@@ -335,7 +346,7 @@
             <div id="cartTotal" class="cart-total"></div>
         </div>
     </div>
- 
+
     <button type="button" class="floating-cart" onclick="openCart()" aria-label="Buka keranjang">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="9" cy="21" r="1"></circle>
@@ -344,10 +355,10 @@
         </svg>
         <span id="cartCount">0</span>
     </button>
- 
+
 </div>
 @endsection
- 
+
 @push('scripts')
 <script src="{{ asset('js/outdoorstore.js') }}"></script>
 @endpush
