@@ -2,7 +2,7 @@
    OUTDOOR STORE – JavaScript
    Handles filtering, sorting, cart, wishlist,
    carousel navigation, and load-more functionality
-   =================================================== */
+ =================================================== */
 
 let currentCategory = 'all';
 let priceMin = null;
@@ -25,7 +25,6 @@ function setCategory(button, category) {
     priceMin = null;
     priceMax = null;
 
-    // Reset all tabs
     document.querySelectorAll('.cat-tab').forEach(function (tab) {
         tab.classList.remove('active');
     });
@@ -34,7 +33,6 @@ function setCategory(button, category) {
         button.classList.add('active');
     }
 
-    // Reset load-more
     currentlyShowing = productsPerPage;
     filterProducts();
     updateLoadMoreVisibility();
@@ -93,7 +91,6 @@ function filterProducts() {
         }
     });
 
-    // Sort matched cards
     matchedCards.sort(function (a, b) {
         var priceA = parseInt(a.dataset.price);
         var priceB = parseInt(b.dataset.price);
@@ -107,7 +104,6 @@ function filterProducts() {
         return 0;
     });
 
-    // Show only up to currentlyShowing
     matchedCards.forEach(function (card, index) {
         if (index < currentlyShowing) {
             card.style.display = '';
@@ -122,7 +118,6 @@ function filterProducts() {
         counter.textContent = visible + ' dari ' + matchedCards.length + ' produk ditampilkan';
     }
 
-    // Store total matched for load-more logic
     window._totalMatchedProducts = matchedCards.length;
     updateLoadMoreVisibility();
 }
@@ -155,8 +150,6 @@ function updateLoadMoreVisibility() {
 
 function toggleWishlist(button) {
     button.classList.toggle('active');
-
-    // Animate heart
     button.style.transform = 'scale(1.3)';
     setTimeout(function () {
         button.style.transform = '';
@@ -165,17 +158,19 @@ function toggleWishlist(button) {
 
 /* ──────────── Cart ──────────── */
 
-function addToCart(name, price) {
+// Modifikasi fungsi ini menggunakan ID berdasar kode teman
+function addToCart(btn, id, name, price) {
     var existing = cart.find(function (item) {
-        return item.name === name;
+        return item.id == id;
     });
 
     if (existing) {
         existing.qty += 1;
     } else {
         cart.push({
+            id: id,
             name: name,
-            price: price,
+            price: parseInt(price),
             qty: 1
         });
     }
@@ -184,7 +179,6 @@ function addToCart(name, price) {
     updateCart();
     openCart();
 
-    // Animate floating cart button
     var floatingCart = document.querySelector('.floating-cart');
     if (floatingCart) {
         floatingCart.style.transform = 'scale(1.2)';
@@ -194,9 +188,10 @@ function addToCart(name, price) {
     }
 }
 
-function removeCartItem(name) {
+// Modifikasi hapus berdasar ID untuk akurasi
+function removeCartItem(id) {
     cart = cart.filter(function (item) {
-        return item.name !== name;
+        return item.id != id;
     });
 
     saveCart();
@@ -239,7 +234,7 @@ function updateCart() {
                     <strong>${item.name}</strong>
                     <span>${item.qty} × Rp ${formatRupiah(item.price)}</span>
                 </div>
-                <button type="button" onclick="removeCartItem('${escapeQuote(item.name)}')">Hapus</button>
+                <button type="button" onclick="removeCartItem('${item.id}')">Hapus</button>
             </div>
         `;
     }).join('');
@@ -269,13 +264,53 @@ function closeCart() {
     }
 }
 
+// Menggabungkan logika submit CSRF Virtual Form dari kode teman ke sistem Checkout
 function checkoutCart() {
     if (cart.length === 0) {
         alert('Keranjang masih kosong.');
         return;
     }
 
-    alert('Checkout berhasil disimulasikan! Bagian ini dapat dihubungkan ke sistem transaksi.');
+    // 1. Hitung total harga dari keranjang
+    const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+    // 2. Ambil token CSRF dari tag meta (Wajib untuk Laravel)
+    const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+    if (!csrfTokenMeta) {
+        alert('Keamanan aplikasi (CSRF Token) tidak ditemukan. Gagal melanjutkan checkout.');
+        return;
+    }
+    const csrfToken = csrfTokenMeta.getAttribute('content');
+
+    // 3. Buat elemen form secara dinamis (Virtual Form)
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/checkout'; // Pastikan URL ini sesuai dengan route di web.php Anda
+
+    // 4. Tambahkan input untuk CSRF Token
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = '_token';
+    csrfInput.value = csrfToken;
+    form.appendChild(csrfInput);
+
+    // 5. Tambahkan input untuk Total Harga
+    const priceInput = document.createElement('input');
+    priceInput.type = 'hidden';
+    priceInput.name = 'total_price';
+    priceInput.value = totalPrice;
+    form.appendChild(priceInput);
+
+    // 6. Tambahkan input Array Cart Items untuk Backend
+    const cartInput = document.createElement('input');
+    cartInput.type = 'hidden';
+    cartInput.name = 'cart_items';
+    cartInput.value = JSON.stringify(cart);
+    form.appendChild(cartInput);
+
+    // 7. Masukkan form ke dalam body dokumen dan submit
+    document.body.appendChild(form);
+    form.submit();
 }
 
 /* ──────────── Popular Carousel ──────────── */

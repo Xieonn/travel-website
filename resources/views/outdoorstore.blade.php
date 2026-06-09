@@ -3,6 +3,8 @@
 @section('title', 'Toko Outdoor - Perlengkapan Pendakian')
 
 @push('styles')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -39,9 +41,7 @@
         </div>
 
         <div class="hero-visual">
-            <img
-                src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1200&q=80"
-                alt="Pendaki gunung dengan perlengkapan outdoor">
+            <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1200&q=80" alt="Pendaki gunung dengan perlengkapan outdoor">
 
             {{-- Floating product cards --}}
             <div class="hero-product-card card-hiking-shoes">
@@ -119,31 +119,31 @@
             @php
             $image = $product->image;
             if (!$image) {
-                $image = $fallbackImages[$loop->index % count($fallbackImages)];
+            $image = $fallbackImages[$loop->index % count($fallbackImages)];
             } elseif (!\Illuminate\Support\Str::startsWith($image, ['http://', 'https://'])) {
-                $image = asset('storage/' . $image);
+            $image = asset('storage/' . $image);
             }
 
             $categoryLabel = $product->category ?? 'Outdoor';
             $nameLower = strtolower($product->name);
             if (str_contains($nameLower, 'jaket') || str_contains($nameLower, 'jacket')) {
-                $subCategory = 'Jaket · Outdoor';
+            $subCategory = 'Jaket · Outdoor';
             } elseif (str_contains($nameLower, 'sepatu') || str_contains($nameLower, 'shoe') || str_contains($nameLower, 'boot')) {
-                $subCategory = 'Sepatu · Hiking';
+            $subCategory = 'Sepatu · Hiking';
             } elseif (str_contains($nameLower, 'tenda') || str_contains($nameLower, 'tent')) {
-                $subCategory = 'Tenda · Camping';
+            $subCategory = 'Tenda · Camping';
             } elseif (str_contains($nameLower, 'carrier') || str_contains($nameLower, 'backpack') || str_contains($nameLower, 'tas')) {
-                $subCategory = 'Tas · Carrier';
+            $subCategory = 'Tas · Carrier';
             } elseif (str_contains($nameLower, 'sleeping') || str_contains($nameLower, 'matras')) {
-                $subCategory = 'Sleeping Gear';
+            $subCategory = 'Sleeping Gear';
             } elseif (str_contains($nameLower, 'botol') || str_contains($nameLower, 'bottle') || str_contains($nameLower, 'water')) {
-                $subCategory = 'Botol · Hydration';
+            $subCategory = 'Botol · Hydration';
             } elseif (str_contains($nameLower, 'headlamp') || str_contains($nameLower, 'senter') || str_contains($nameLower, 'lamp')) {
-                $subCategory = 'Aksesoris · Lighting';
+            $subCategory = 'Aksesoris · Lighting';
             } elseif (strtolower($product->category) === 'pakaian') {
-                $subCategory = 'Pakaian · Outdoor';
+            $subCategory = 'Pakaian · Outdoor';
             } else {
-                $subCategory = ucfirst($product->category ?? 'Outdoor');
+            $subCategory = ucfirst($product->category ?? 'Outdoor');
             }
 
             // Generate random rating & sold count for display
@@ -153,8 +153,7 @@
             $soldCount = $sold[$loop->index % count($sold)];
             @endphp
 
-            <article
-                class="product-card"
+            <article class="product-card"
                 data-category="{{ $product->category }}"
                 data-name="{{ strtolower($product->name) }}"
                 data-search="{{ strtolower($product->name . ' ' . $product->description . ' ' . $product->category) }}"
@@ -163,7 +162,9 @@
                 <div class="product-image">
                     <img src="{{ $image }}" alt="{{ $product->name }}" loading="lazy">
                     <button class="wishlist-btn" type="button" onclick="toggleWishlist(this)" aria-label="Tambah ke wishlist">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
                     </button>
                     @if($loop->index === 0)
                     <span class="product-badge badge-bestseller">BEST SELLER</span>
@@ -184,14 +185,15 @@
                     </div>
 
                     <div class="product-stock">
-                        <span class="stock-dot"></span>
-                        Stok: Tersedia
+                        <span class="stock-dot"></span> Stok: Tersedia
                     </div>
 
-                    <button
-                        type="button"
+                    <button type="button"
                         class="btn-add-cart"
-                        onclick="addToCart('{{ addslashes($product->name) }}', {{ (int) $product->price }})">
+                        data-id="{{ $product->id }}"
+                        data-name="{{ addslashes($product->name) }}"
+                        data-price="{{ (int) $product->price }}"
+                        onclick="addToCart(this, this.dataset.id, this.dataset.name, this.dataset.price)">
                         + Tambah ke Keranjang
                     </button>
                 </div>
@@ -207,7 +209,9 @@
         <div class="load-more-wrap">
             <button type="button" class="load-more-btn" id="loadMoreBtn">
                 Muat Lebih Banyak Produk
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
             </button>
         </div>
     </section>
@@ -221,7 +225,9 @@
 
         <div class="popular-carousel-wrapper">
             <button class="carousel-arrow arrow-left" id="popularPrev" type="button" aria-label="Sebelumnya">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
             </button>
 
             <div class="popular-carousel" id="popularCarousel">
@@ -229,9 +235,9 @@
                 @php
                 $popularImage = $product->image;
                 if (!$popularImage) {
-                    $popularImage = $fallbackImages[$loop->index % count($fallbackImages)];
+                $popularImage = $fallbackImages[$loop->index % count($fallbackImages)];
                 } elseif (!\Illuminate\Support\Str::startsWith($popularImage, ['http://', 'https://'])) {
-                    $popularImage = asset('storage/' . $popularImage);
+                $popularImage = asset('storage/' . $popularImage);
                 }
                 $ratings = ['4.5', '4.6', '4.7', '4.8', '4.9'];
                 $rating = $ratings[$loop->index % count($ratings)];
@@ -254,7 +260,9 @@
             </div>
 
             <button class="carousel-arrow arrow-right" id="popularNext" type="button" aria-label="Selanjutnya">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
             </button>
         </div>
     </section>
@@ -263,7 +271,12 @@
     <section class="benefit-section">
         <div class="benefit-card">
             <div class="benefit-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="1" y="3" width="15" height="13"></rect>
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                </svg>
             </div>
             <div>
                 <strong>Gratis Ongkir</strong>
@@ -273,7 +286,10 @@
 
         <div class="benefit-card">
             <div class="benefit-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    <polyline points="9 12 11 14 15 10"></polyline>
+                </svg>
             </div>
             <div>
                 <strong>Garansi Resmi</strong>
@@ -283,7 +299,10 @@
 
         <div class="benefit-card">
             <div class="benefit-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <polyline points="1 4 1 10 7 10"></polyline>
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                </svg>
             </div>
             <div>
                 <strong>14 Hari Retur</strong>
@@ -293,7 +312,9 @@
 
         <div class="benefit-card">
             <div class="benefit-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
             </div>
             <div>
                 <strong>Layanan 24/7</strong>
@@ -316,7 +337,11 @@
     </div>
 
     <button type="button" class="floating-cart" onclick="openCart()" aria-label="Buka keranjang">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
         <span id="cartCount">0</span>
     </button>
 
