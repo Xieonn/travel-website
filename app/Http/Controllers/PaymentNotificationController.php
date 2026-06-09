@@ -17,7 +17,7 @@ class PaymentNotificationController extends Controller
 
         try {
             // 2. Tangkap data notifikasi dari Midtrans
-            $notif = new Notification();
+            $notif = new \Midtrans\Notification();
 
             $transactionStatus = $notif->transaction_status;
             $orderId = $notif->order_id;
