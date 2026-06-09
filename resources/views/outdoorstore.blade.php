@@ -81,7 +81,10 @@
 
         <div class="toolbar">
             <div class="search-box">
-                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
+                </svg>
                 <input type="text" id="search" placeholder="Cari produk..." oninput="filter()">
                 <button class="search-clear" type="button" onclick="clearSearch()">✕</button>
             </div>
@@ -102,44 +105,55 @@
 
         <div class="grid" id="grid">
             @forelse($products as $product)
-                <div class="card" data-cat="{{ $product->category ?? 'hiking' }}" data-price="{{ $product->price }}" data-name="{{ strtolower($product->name) }}" data-search="{{ strtolower($product->name . ' ' . ($product->description ?? '')) }}">
-                    <div class="card-img">
-                        @if(($product->category ?? 'hiking') === 'pakaian')
-                            👕
-                            <span class="card-badge emerald">Pakaian</span>
-                        @else
-                            ⛺
-                            <span class="card-badge">Alat</span>
-                        @endif
-                        <button class="card-heart" onclick="toggleWish(this)">
-                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <div class="card" data-cat="{{ $product->category ?? 'hiking' }}" data-price="{{ $product->price }}" data-name="{{ strtolower($product->name) }}" data-search="{{ strtolower($product->name . ' ' . ($product->description ?? '')) }}">
+                <div class="card-img">
+                    @if(($product->category ?? 'hiking') === 'pakaian')
+                    👕
+                    <span class="card-badge emerald">Pakaian</span>
+                    @else
+                    ⛺
+                    <span class="card-badge">Alat</span>
+                    @endif
+                    <button class="card-heart" onclick="toggleWish(this)">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="card-info">
+                    <div class="card-header">
+                        <span class="card-price">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                        <span class="card-rating">
+                            <svg class="star" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
+                            {{ $product->rating ?? '4.8' }}
+                        </span>
+                    </div>
+                    <h3 class="card-title">{{ $product->name }}</h3>
+                    <p class="card-desc">{{ $product->description ?? 'Perlengkapan outdoor premium' }}</p>
+                    <div class="card-footer">
+                        <span class="stock">Stok {{ $product->stock ?? 0 }}</span>
+                        <button class="card-btn" data-name="{{ $product->name }}" data-price="{{ $product->price }}" onclick="addToCart(this, this.dataset.name, this.dataset.price)">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <circle cx="9" cy="21" r="1" />
+                                <circle cx="20" cy="21" r="1" />
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                            </svg>
+                            Tambah
                         </button>
                     </div>
-                    <div class="card-info">
-                        <div class="card-header">
-                            <span class="card-price">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
-                            <span class="card-rating">
-                                <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                                {{ $product->rating ?? '4.8' }}
-                            </span>
-                        </div>
-                        <h3 class="card-title">{{ $product->name }}</h3>
-                        <p class="card-desc">{{ $product->description ?? 'Perlengkapan outdoor premium' }}</p>
-                        <div class="card-footer">
-                            <span class="stock">Stok {{ $product->stock ?? 0 }}</span>
-                            <button class="card-btn" onclick="addToCart(this, '{{ addslashes($product->name) }}', {{ $product->price }})">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                                Tambah
-                            </button>
-                        </div>
-                    </div>
                 </div>
+            </div>
             @empty
-                <div class="empty">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/></svg>
-                    <p style="font-weight:600;margin-bottom:4px">Belum ada produk</p>
-                    <p style="font-size:12px">Cek kembali nanti</p>
-                </div>
+            <div class="empty">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M16 16s-1.5-2-4-2-4 2-4 2" />
+                </svg>
+                <p style="font-weight:600;margin-bottom:4px">Belum ada produk</p>
+                <p style="font-size:12px">Cek kembali nanti</p>
+            </div>
             @endforelse
         </div>
 
@@ -155,7 +169,11 @@
         </div>
 
         <div class="cart-badge" onclick="openCart()">
-            <span id="cartCountBadge">0</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
             <div class="cart-count" id="cartCount" style="display: none;">0</div>
         </div>
     </section>
@@ -164,8 +182,8 @@
     <section id="kenapa" class="why">
         <div class="why-grid">
             <div>
-                <div class="eyebrow">Kenapa Kami?</div>
-                <h2>Gear Hiking Premium dengan Tampilan Modern</h2>
+                <div class="eyebrow">Kenapa harus Kami?</div>
+                <h2>Perlengkapan Hiking premium dengan Kualitas yang terjamin original</h2>
                 <p>Semua produk dipilih khusus untuk kenyamanan, ketahanan, dan kepraktisan di jalur. Dari ransel dan tenda hingga jaket teknis, semuanya dirancang menemani perjalanan Anda dengan percaya diri.</p>
                 <div class="why-cards">
                     <div class="why-card">
@@ -197,7 +215,7 @@
                     <div class="check-num">3</div>
                     <div>
                         <p class="check-title">Pakaian Teknis</p>
-                        <p class="check-sub">Moisture-wicking, windproof, nyaman sepanjang hari.</p>
+                        <p class="check-sub">Moisture wicking, windproof, nyaman sepanjang hari.</p>
                     </div>
                 </div>
                 <div class="check">
