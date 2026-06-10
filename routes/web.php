@@ -54,4 +54,19 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+// Route untuk proses checkout dan pembayaran (wajib login)
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+    
+    // Tambahkan route riwayat transaksi di sini
+    Route::get('/riwayat-transaksi', [TransactionController::class, 'index'])->name('transactions.history');
+});
+
+
+Route::post('/midtrans/callback', [PaymentNotificationController::class, 'handle']);
+
 require __DIR__.'/auth.php';

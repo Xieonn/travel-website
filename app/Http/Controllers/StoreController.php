@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Product;
 
 class StoreController extends Controller
 {
     public function index()
     {
-        // Mengambil 8 produk terbaru dari database
-        $products = Product::latest()->take(8)->get();
+        // Hanya mengambil data produk dari database
+        $products = Product::latest()->get();
 
-        // Mengirim data ke view
+        // Melempar variabel $products saja ke halaman blade
         return view('outdoorstore', compact('products'));
     }
 }
