@@ -5,9 +5,7 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\DestinationController;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\PaymentNotificationController;
-use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\PostController;
 use App\Models\Product;
 
 // Halaman utama
@@ -31,9 +29,9 @@ Route::get('/destinasi/{id}', [DestinationController::class, 'show']);
 
 Route::get('/toko', [StoreController::class, 'index']);
 
-Route::get('/berita', function () {
-    return 'Halaman Berita - coming soon';
-});
+// Halaman berita
+Route::get('/berita', [PostController::class, 'index']);
+Route::get('/berita/{id}', [PostController::class, 'show']);
 
 // Halaman khusus Admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
