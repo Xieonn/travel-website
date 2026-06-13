@@ -73,8 +73,9 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     // Pastikan 2 baris ini ada dan tidak ada salah ketik (typo)
     Route::get('/destinasi/tambah', [DestinationController::class, 'create'])->name('admin.destinasi.create');
     Route::post('/destinasi', [DestinationController::class, 'store'])->name('admin.destinasi.store');
-});
 
+    Route::delete('/destinasi/{id}', [DestinationController::class, 'destroy'])->name('admin.destinasi.destroy');
+    });    
 // --------------------------------------------------------
 // HALAMAN KHUSUS SELLER
 // --------------------------------------------------------
