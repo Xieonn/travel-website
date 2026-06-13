@@ -5,68 +5,83 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\PaymentNotificationController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\PostController;
 use App\Models\Product;
 
-// Halaman utama
+// --------------------------------------------------------
+// HALAMAN PUBLIK (Bisa diakses tanpa login)
+// --------------------------------------------------------
 Route::get('/', [HomeController::class, 'index']);
+Route::get('/destinasi', [DestinationController::class, 'index']);
+Route::get('/destinasi/{id}', [DestinationController::class, 'show']);
+Route::get('/toko', [StoreController::class, 'index']);
+Route::get('/berita', function () {
+    return 'Halaman Berita - coming soon';
+});
 
-// Dashboard Breeze
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Midtrans Callback (Harus di luar Auth)
+Route::post('/midtrans/callback', [PaymentNotificationController::class, 'handle']);
 
-// Profile Breeze
+// --------------------------------------------------------
+// HALAMAN USER (Wajib Login)
+// --------------------------------------------------------
 Route::middleware('auth')->group(function () {
+    // Dashboard Utama User
+    Route::get('/dashboard', function () {
+        // Pastikan file view ada di resources/views/profile/dashboard.blade.php
+        return view('profile.dashboard'); 
+    })->name('dashboard');
+
+    // Profile Management (Breeze Default)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
-// Halaman publik
-Route::get('/destinasi', [DestinationController::class, 'index']);
-Route::get('/destinasi/{id}', [DestinationController::class, 'show']);
-
-Route::get('/toko', [StoreController::class, 'index']);
-
-// Halaman berita
-Route::get('/berita', [PostController::class, 'index']);
-Route::get('/berita/{id}', [PostController::class, 'show']);
-
-// Halaman khusus Admin
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return 'Dashboard Admin - coming soon';
+    // Menu Umum Dashboard
+    Route::get('/user/destinasi/favorit', function () {
+        return 'Halaman Destinasi Favorit - coming soon';
     });
-});
-
-// Halaman khusus Seller
-Route::middleware(['auth', 'role:seller'])->prefix('seller')->group(function () {
-    Route::get('/dashboard', function () {
-        return 'Dashboard Seller - coming soon';
-    });
-});
-
-// Halaman untuk User yang sudah login
-Route::middleware(['auth'])->group(function () {
+    
+    // Transaksi & Keranjang
     Route::get('/keranjang', function () {
         return 'Halaman Keranjang - coming soon';
     });
-});
 
-// Route untuk proses checkout dan pembayaran (wajib login)
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
-});
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+    // Halaman berita
+    Route::get('/berita', [PostController::class, 'index']);
+    Route::get('/berita/{id}', [PostController::class, 'show']);
     
-    // Tambahkan route riwayat transaksi di sini
     Route::get('/riwayat-transaksi', [TransactionController::class, 'index'])->name('transactions.history');
 });
 
+// Proses yang butuh verifikasi email ekstra (Keamanan Tambahan)
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+});
 
-Route::post('/midtrans/callback', [PaymentNotificationController::class, 'handle']);
+// --------------------------------------------------------
+// HALAMAN KHUSUS ADMIN
+// --------------------------------------------------------
+Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+        return 'Dashboard Admin - coming soon';
+    });
+    
+    // Nanti rute untuk "Mengelola" destinasi, pengguna, dll letakkan di dalam grup ini.
+});
+
+// --------------------------------------------------------
+// HALAMAN KHUSUS SELLER
+// --------------------------------------------------------
+Route::middleware(['auth', 'role:Seller'])->prefix('seller')->group(function () {
+    Route::get('/dashboard', function () {
+        return 'Dashboard Seller - coming soon';
+    });
+    
+    // Nanti rute untuk mengelola toko/produk letakkan di sini.
+});
 
 require __DIR__.'/auth.php';

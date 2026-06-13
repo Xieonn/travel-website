@@ -139,8 +139,8 @@
             flex-shrink: 0;
         }
 
-        /* Cart Badge */
-        .nav-cart {
+        /* Riwayat Button (sebelumnya Cart) */
+        .nav-history {
             position: relative;
             text-decoration: none;
             font-size: 0.875rem;
@@ -154,12 +154,12 @@
             gap: 6px;
         }
 
-        .nav-cart:hover {
+        .nav-history:hover {
             color: var(--brand-ocean);
             background: rgba(13,59,94,0.06);
         }
 
-        .cart-icon {
+        .history-icon {
             width: 18px;
             height: 18px;
             stroke: currentColor;
@@ -445,14 +445,13 @@
                 <div class="nav-divider"></div>
 
                 @auth
-                    {{-- Keranjang --}}
-                    <a href="/keranjang" class="nav-cart">
-                        <svg class="cart-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-                            <line x1="3" y1="6" x2="21" y2="6"/>
-                            <path d="M16 10a4 4 0 01-8 0"/>
+                    {{-- Riwayat Pembelian (Disesuaikan dari Keranjang) --}}
+                    <a href="{{ route('transactions.history') }}" class="nav-history">
+                        <svg class="history-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 5v2"/><path d="M15 11v2"/><path d="M15 17v2"/>
+                            <path d="M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z"/>
                         </svg>
-                        Keranjang
+                        Riwayat Pembelian
                     </a>
 
                     @if(auth()->user()->isAdmin())
