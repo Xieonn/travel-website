@@ -8,10 +8,16 @@
 
     <div class="bg-white rounded-2xl shadow-lg overflow-hidden mt-4">
 
-        {{-- Hero Image --}}
-        <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-64 flex items-center justify-center text-8xl">
-            🏝️
-        </div>
+        {{-- Hero Image (Menampilkan Foto Asli) --}}
+        @if($destination->image)
+            <div class="h-80 w-full relative">
+                <img src="{{ asset('storage/' . $destination->image) }}" alt="Foto {{ $destination->name }}" class="w-full h-full object-cover">
+            </div>
+        @else
+            <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-80 flex items-center justify-center text-8xl">
+                🏝️
+            </div>
+        @endif
 
         <div class="p-8">
             <span class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
@@ -34,16 +40,25 @@
         </div>
     </div>
 
-    {{-- Tombol Hapus: Hanya muncul jika yang login adalah Admin --}}
+{{-- Aksi Khusus Admin --}}
 @role('Admin')
-    <form action="{{ route('admin.destinasi.destroy', $destination->id) }}" method="POST" onsubmit="return confirm('Peringatan: Apakah Anda yakin ingin menghapus destinasi ini secara permanen?');" style="margin-top: 1.5rem;">
-        @csrf
-        @method('DELETE')
-        <button type="submit" style="background-color: var(--brand-coral); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; transition: background 0.2s;">
-            <svg style="width: 16px; height: 16px; display: inline-block; vertical-align: text-bottom; margin-right: 4px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-            Hapus Destinasi
-        </button>
-    </form>
+    <div style="margin-top: 1.5rem; display: flex; gap: 1rem; align-items: center;">
+        {{-- Tombol Edit --}}
+        <a href="{{ route('admin.destinasi.edit', $destination->id) }}" style="background-color: var(--brand-ocean); color: white; text-decoration: none; padding: 0.6rem 1.2rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 500; transition: background 0.2s;">
+            <svg style="width: 16px; height: 16px; display: inline-block; vertical-align: text-bottom; margin-right: 4px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+            Edit Destinasi
+        </a>
+
+        {{-- Tombol Hapus --}}
+        <form action="{{ route('admin.destinasi.destroy', $destination->id) }}" method="POST" onsubmit="return confirm('Peringatan: Apakah Anda yakin ingin menghapus destinasi ini secara permanen?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" style="background-color: var(--brand-coral); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; transition: background 0.2s;">
+                <svg style="width: 16px; height: 16px; display: inline-block; vertical-align: text-bottom; margin-right: 4px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                Hapus Destinasi
+            </button>
+        </form>
+    </div>
 @endrole
 
 @endsection {{-- Section Content Ditutup Di Sini --}}

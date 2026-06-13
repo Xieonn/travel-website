@@ -75,4 +75,44 @@ class DestinationController extends Controller
         // Kembalikan ke halaman sebelumnya (atau beranda) dengan pesan sukses
         return redirect('/')->with('success', 'Destinasi berhasil dihapus secara permanen.');
     }
+
+
+    // Menampilkan halaman form edit dengan data lama
+    public function edit($id)
+    {
+        $destination = Destination::findOrFail($id);
+        return view('admin.destinasi.edit', compact('destination'));
+    }
+
+    // Memproses pembaruan data
+    public function update(Request $request, $id)
+    {
+        $destination = Destination::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        // Jika Admin mengunggah foto baru
+        if ($request->hasFile('image')) {
+            // Hapus foto lama dari storage fisik server jika ada
+            if ($destination->image) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($destination->image);
+            }
+            // Simpan foto baru
+            $imagePath = $request->file('image')->store('destinations', 'public');
+            $validated['image'] = $imagePath;
+        }
+
+        // Perbarui data di database
+        $destination->update($validated);
+
+        return redirect()->route('dashboard')->with('success', 'Data destinasi berhasil diperbarui!');
+    }
 }

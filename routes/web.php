@@ -76,6 +76,13 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
 
     Route::delete('/destinasi/{id}', [DestinationController::class, 'destroy'])->name('admin.destinasi.destroy');
     });    
+
+    // ... rute create, store, dan destroy sebelumnya ...
+    
+    // Rute untuk fitur Edit
+    Route::get('/destinasi/{id}/edit', [DestinationController::class, 'edit'])->name('admin.destinasi.edit');
+    Route::put('/destinasi/{id}', [DestinationController::class, 'update'])->name('admin.destinasi.update');
+    
 // --------------------------------------------------------
 // HALAMAN KHUSUS SELLER
 // --------------------------------------------------------
