@@ -435,7 +435,7 @@
                 <span class="nav-logo-text">{{ config('app.name', 'Travel Website') }}</span>
             </a>
 
-            {{-- Nav Links --}}
+{{-- Nav Links --}}
             <div class="nav-links">
                 <a href="/" class="nav-link">Beranda</a>
                 <a href="/destinasi" class="nav-link">Destinasi</a>
@@ -445,11 +445,18 @@
                 <div class="nav-divider"></div>
 
                 @auth
-                    {{-- Riwayat Pembelian (Disesuaikan dari Keranjang) --}}
+                    {{-- Tambahan Tombol Dashboard untuk semua user yang sudah login --}}
+                    <a href="{{ route('dashboard') }}" class="nav-link" style="font-weight: 500;">
+                        Dashboard Saya
+                    </a>
+
+                    {{-- Riwayat Pembelian dengan Ikon Struk Belanja Baru --}}
                     <a href="{{ route('transactions.history') }}" class="nav-history">
-                        <svg class="history-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15 5v2"/><path d="M15 11v2"/><path d="M15 17v2"/>
-                            <path d="M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z"/>
+                        <svg class="history-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 7h6"></path>
+                            <path d="M9 11h6"></path>
+                            <path d="M9 15h4"></path>
+                            <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16l-3-2-2 2-2-2-2 2-2-2-3 2z"></path>
                         </svg>
                         Riwayat Pembelian
                     </a>
@@ -470,8 +477,7 @@
                     <a href="/login" class="btn-login">Masuk</a>
                     <a href="/register" class="btn-register">Daftar Gratis</a>
                 @endauth
-            </div>
-        </div>
+            </div>       
     </nav>
 
     {{-- ──────────────────────────────── FLASH MESSAGES ──── --}}
