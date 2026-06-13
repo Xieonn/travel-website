@@ -164,6 +164,17 @@
              MENU KHUSUS ADMIN 
         ======================================================== --}}
         @role('Admin')
+        
+        {{-- KARTU BARU YANG DITAMBAHKAN --}}
+        <div class="feature-card admin-card">
+            <div class="card-icon icon-coral">🏔️</div>
+            <h3>Kelola Destinasi</h3>
+            <p>Tambahkan destinasi wisata baru beserta deskripsi dan informasi lokasinya ke dalam sistem.</p>
+            <a href="{{ route('admin.destinasi.create') }}" class="card-btn">
+                Tambah Destinasi <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+        
         <div class="feature-card admin-card">
             <div class="card-icon icon-coral">👑</div>
             <h3>Kelola Pengguna</h3>

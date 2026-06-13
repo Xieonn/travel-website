@@ -16,17 +16,4 @@ class Destination extends Model
         'image',
         'category',
     ];
-
-    public function up(): void
-{
-    Schema::create('destinations', function (Blueprint $table) {
-        $table->id();
-        $table->string('name');
-        $table->text('description');
-        $table->string('location');
-        $table->string('image')->nullable();
-        $table->string('category');
-        $table->timestamps();
-    });
-}
 }

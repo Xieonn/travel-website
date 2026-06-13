@@ -69,8 +69,10 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return 'Dashboard Admin - coming soon';
     });
-    
-    // Nanti rute untuk "Mengelola" destinasi, pengguna, dll letakkan di dalam grup ini.
+
+    // Pastikan 2 baris ini ada dan tidak ada salah ketik (typo)
+    Route::get('/destinasi/tambah', [DestinationController::class, 'create'])->name('admin.destinasi.create');
+    Route::post('/destinasi', [DestinationController::class, 'store'])->name('admin.destinasi.store');
 });
 
 // --------------------------------------------------------
