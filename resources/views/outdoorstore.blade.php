@@ -123,7 +123,7 @@
             } elseif (!\Illuminate\Support\Str::startsWith($image, ['http://', 'https://'])) {
                 $image = asset('storage/' . $image);
             }
- 
+
             $categoryLabel = $product->category ?? 'Outdoor';
             $nameLower = strtolower($product->name);
             if (str_contains($nameLower, 'jaket') || str_contains($nameLower, 'jacket')) {
@@ -145,12 +145,10 @@
             } else {
                 $subCategory = ucfirst($product->category ?? 'Outdoor');
             }
- 
-            // Generate random rating & sold count for display
-            $ratings = ['4.5', '4.6', '4.7', '4.8', '4.9'];
-            $rating = $ratings[$loop->index % count($ratings)];
-            $sold = [42, 56, 73, 88, 96, 103, 120, 128];
-            $soldCount = $sold[$loop->index % count($sold)];
+
+            // Rating & sold count dari database (bukan acak)
+            $rating = number_format($product->rating ?? 0, 1);
+            $soldCount = $product->sold_count ?? 0;
             @endphp
  
             <article class="product-card"
@@ -239,8 +237,7 @@
                 } elseif (!\Illuminate\Support\Str::startsWith($popularImage, ['http://', 'https://'])) {
                     $popularImage = asset('storage/' . $popularImage);
                 }
-                $ratings = ['4.5', '4.6', '4.7', '4.8', '4.9'];
-                $rating = $ratings[$loop->index % count($ratings)];
+                $rating = number_format($product->rating ?? 0, 1);
                 @endphp
  
                 <div class="popular-card">

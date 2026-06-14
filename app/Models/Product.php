@@ -15,6 +15,20 @@ class Product extends Model
         'price',
         'stock',
         'image',
-        'category'
+        'category',
+        'seller_id',
+        'rating',
+        'sold_count',
     ];
+
+    protected $casts = [
+        'price' => 'decimal:2',
+        'rating' => 'decimal:1',
+        'sold_count' => 'integer',
+    ];
+
+    public function seller()
+    {
+        return $this->belongsTo(User::class, 'seller_id');
+    }
 }

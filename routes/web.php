@@ -36,17 +36,16 @@ Route::get('/berita', function () {
 });
 
 // Halaman khusus Admin
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return 'Dashboard Admin - coming soon';
     });
 });
 
 // Halaman khusus Seller
-Route::middleware(['auth', 'role:seller'])->prefix('seller')->group(function () {
-    Route::get('/dashboard', function () {
-        return 'Dashboard Seller - coming soon';
-    });
+Route::middleware(['auth', 'role:Seller'])->prefix('seller')->name('seller.')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\Seller\ProductController::class, 'dashboard'])->name('dashboard');
+    Route::resource('products', App\Http\Controllers\Seller\ProductController::class);
 });
 
 // Halaman untuk User yang sudah login
