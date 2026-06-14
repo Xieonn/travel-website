@@ -18,9 +18,6 @@ Route::get('/', [HomeController::class, 'index']);
 Route::get('/destinasi', [DestinationController::class, 'index']);
 Route::get('/destinasi/{id}', [DestinationController::class, 'show']);
 Route::get('/toko', [StoreController::class, 'index']);
-Route::get('/berita', function () {
-    return 'Halaman Berita - coming soon';
-});
 
 // Midtrans Callback (Harus di luar Auth)
 Route::post('/midtrans/callback', [PaymentNotificationController::class, 'handle']);
@@ -31,7 +28,6 @@ Route::post('/midtrans/callback', [PaymentNotificationController::class, 'handle
 Route::middleware('auth')->group(function () {
     // Dashboard Utama User
     Route::get('/dashboard', function () {
-        // Pastikan file view ada di resources/views/profile/dashboard.blade.php
         return view('profile.dashboard'); 
     })->name('dashboard');
 
@@ -70,28 +66,21 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
         return 'Dashboard Admin - coming soon';
     });
 
-    // Pastikan 2 baris ini ada dan tidak ada salah ketik (typo)
+    // Manajemen Destinasi (Sudah diperbaiki, semua rute sekarang masuk dalam grup Admin)
     Route::get('/destinasi/tambah', [DestinationController::class, 'create'])->name('admin.destinasi.create');
     Route::post('/destinasi', [DestinationController::class, 'store'])->name('admin.destinasi.store');
-
-    Route::delete('/destinasi/{id}', [DestinationController::class, 'destroy'])->name('admin.destinasi.destroy');
-    });    
-
-    // ... rute create, store, dan destroy sebelumnya ...
-    
-    // Rute untuk fitur Edit
     Route::get('/destinasi/{id}/edit', [DestinationController::class, 'edit'])->name('admin.destinasi.edit');
     Route::put('/destinasi/{id}', [DestinationController::class, 'update'])->name('admin.destinasi.update');
-    
+    Route::delete('/destinasi/{id}', [DestinationController::class, 'destroy'])->name('admin.destinasi.destroy');
+});
+
 // --------------------------------------------------------
 // HALAMAN KHUSUS SELLER
 // --------------------------------------------------------
-Route::middleware(['auth', 'role:Seller'])->prefix('seller')->group(function () {
-    Route::get('/dashboard', function () {
-        return 'Dashboard Seller - coming soon';
-    });
-    
-    // Nanti rute untuk mengelola toko/produk letakkan di sini.
+// Menggunakan kodemu dari branch Fitur-OutdoorStore karena lebih lengkap
+Route::middleware(['auth', 'role:Seller'])->prefix('seller')->name('seller.')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\Seller\ProductController::class, 'dashboard'])->name('dashboard');
+    Route::resource('products', App\Http\Controllers\Seller\ProductController::class);
 });
 
 require __DIR__.'/auth.php';

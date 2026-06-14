@@ -117,45 +117,57 @@
         <div id="productGrid" class="product-grid">
             @forelse($products as $product)
             @php
-            // --- MULAI KODE GAMBAR MANUAL ---
-            $daftarGambar = [
-            'terra45.webp',
-            'vectiv.webp', // Ganti dengan nama file gambar aslimu
-            'tenda.webp', // Ganti dengan nama file gambar aslimu
-            'jaket.webp', // Ganti dengan nama file gambar aslimu
-            ];
-
-            $namaGambar = $daftarGambar[$loop->index % count($daftarGambar)];
-            $image = asset('images/' . $namaGambar);
-            // --- AKHIR KODE GAMBAR MANUAL ---
+            // --- GABUNGAN KODE GAMBAR ---
+            $image = $product->image;
+            if (!$image) {
+                // Gunakan gambar dummy temanmu jika di database kosong
+                $daftarGambar = ['terra45.webp', 'vectiv.webp', 'tenda.webp', 'jaket.webp'];
+                $namaGambar = $daftarGambar[$loop->index % count($daftarGambar)];
+                $image = asset('images/' . $namaGambar);
+            } elseif (!\Illuminate\Support\Str::startsWith($image, ['http://', 'https://'])) {
+                // Path storage dari kodemu
+                $image = asset('storage/' . $image);
+            }
 
             $categoryLabel = $product->category ?? 'Outdoor';
             $nameLower = strtolower($product->name);
             if (str_contains($nameLower, 'jaket') || str_contains($nameLower, 'jacket')) {
-            $subCategory = 'Jaket · Outdoor';
+                $subCategory = 'Jaket · Outdoor';
             } elseif (str_contains($nameLower, 'sepatu') || str_contains($nameLower, 'shoe') || str_contains($nameLower, 'boot')) {
-            $subCategory = 'Sepatu · Hiking';
+                $subCategory = 'Sepatu · Hiking';
             } elseif (str_contains($nameLower, 'tenda') || str_contains($nameLower, 'tent')) {
-            $subCategory = 'Tenda · Camping';
+                $subCategory = 'Tenda · Camping';
             } elseif (str_contains($nameLower, 'carrier') || str_contains($nameLower, 'backpack') || str_contains($nameLower, 'tas')) {
-            $subCategory = 'Tas · Carrier';
+                $subCategory = 'Tas · Carrier';
             } elseif (str_contains($nameLower, 'sleeping') || str_contains($nameLower, 'matras')) {
-            $subCategory = 'Sleeping Gear';
+                $subCategory = 'Sleeping Gear';
             } elseif (str_contains($nameLower, 'botol') || str_contains($nameLower, 'bottle') || str_contains($nameLower, 'water')) {
-            $subCategory = 'Botol · Hydration';
+                $subCategory = 'Botol · Hydration';
             } elseif (str_contains($nameLower, 'headlamp') || str_contains($nameLower, 'senter') || str_contains($nameLower, 'lamp')) {
-            $subCategory = 'Aksesoris · Lighting';
+                $subCategory = 'Aksesoris · Lighting';
             } elseif (strtolower($product->category) === 'pakaian') {
-            $subCategory = 'Pakaian · Outdoor';
+                $subCategory = 'Pakaian · Outdoor';
             } else {
-            $subCategory = ucfirst($product->category ?? 'Outdoor');
+                $subCategory = ucfirst($product->category ?? 'Outdoor');
             }
 
-            // Generate random rating & sold count for display
-            $ratings = ['4.5', '4.6', '4.7', '4.8', '4.9'];
-            $rating = $ratings[$loop->index % count($ratings)];
-            $sold = [42, 56, 73, 88, 96, 103, 120, 128];
-            $soldCount = $sold[$loop->index % count($sold)];
+            // --- GABUNGAN RATING & SOLD COUNT ---
+            // Cek nilai DB kodemu dulu, jika 0 pakai random temanmu
+            $dbRating = $product->rating ?? 0;
+            if ($dbRating > 0) {
+                $rating = number_format($dbRating, 1);
+            } else {
+                $ratings = ['4.5', '4.6', '4.7', '4.8', '4.9'];
+                $rating = $ratings[$loop->index % count($ratings)];
+            }
+
+            $dbSold = $product->sold_count ?? 0;
+            if ($dbSold > 0) {
+                $soldCount = $dbSold;
+            } else {
+                $sold = [42, 56, 73, 88, 96, 103, 120, 128];
+                $soldCount = $sold[$loop->index % count($sold)];
+            }
             @endphp
 
             <article class="product-card"
@@ -238,20 +250,23 @@
             <div class="popular-carousel" id="popularCarousel">
                 @foreach($products->take(8) as $product)
                 @php
-                // --- MULAI KODE GAMBAR MANUAL UNTUK POPULAR PICKS ---
-                $daftarGambarPopuler = [
-                'terra45.webp',
-                'vectiv.webp',
-                'tenda.webp',
-                'jaket.webp',
-                ];
-
-                $namaGambarPopuler = $daftarGambarPopuler[$loop->index % count($daftarGambarPopuler)];
-                $popularImage = asset('images/' . $namaGambarPopuler);
-                // --- AKHIR KODE GAMBAR MANUAL ---
-
-                $ratings = ['4.5', '4.6', '4.7', '4.8', '4.9'];
-                $rating = $ratings[$loop->index % count($ratings)];
+                // --- GABUNGAN GAMBAR & RATING POPULAR PICKS ---
+                $popularImage = $product->image;
+                if (!$popularImage) {
+                    $daftarGambarPopuler = ['terra45.webp', 'vectiv.webp', 'tenda.webp', 'jaket.webp'];
+                    $namaGambarPopuler = $daftarGambarPopuler[$loop->index % count($daftarGambarPopuler)];
+                    $popularImage = asset('images/' . $namaGambarPopuler);
+                } elseif (!\Illuminate\Support\Str::startsWith($popularImage, ['http://', 'https://'])) {
+                    $popularImage = asset('storage/' . $popularImage);
+                }
+                
+                $dbRatingPop = $product->rating ?? 0;
+                if ($dbRatingPop > 0) {
+                    $rating = number_format($dbRatingPop, 1);
+                } else {
+                    $ratings = ['4.5', '4.6', '4.7', '4.8', '4.9'];
+                    $rating = $ratings[$loop->index % count($ratings)];
+                }
                 @endphp
 
                 <div class="popular-card">
