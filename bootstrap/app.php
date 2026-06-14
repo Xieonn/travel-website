@@ -12,6 +12,15 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         
+
+        $middleware->validateCsrfTokens(
+            except: [
+                '/midtrans/callback',
+                'midtrans/*',
+                '/',
+            ]
+        );
+
         // Tambahkan blok kode alias ini
         $middleware->alias([
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
