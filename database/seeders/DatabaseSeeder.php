@@ -2,54 +2,57 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Destination;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Role; // Dari kodemu (Fitur-OutdoorStore)
+use App\Models\User;               // Dari kode temanmu (main)
 
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // Buat role jika belum ada
+        // 1. DARI KODEMU: Buat role jika belum ada
         Role::firstOrCreate(['name' => 'Admin']);
         Role::firstOrCreate(['name' => 'Seller']);
         Role::firstOrCreate(['name' => 'User']);
 
-        // Buat akun Admin
+        // 2. DARI KODE TEMANMU: Memanggil RolePermissionSeeder
+        $this->call([
+            RolePermissionSeeder::class,
+        ]);
+
+        // 3. GABUNGAN: Buat akun Admin
         $admin = User::firstOrCreate(
             ['email' => 'admin@travel.com'],
             [
                 'name' => 'Admin',
                 'password' => Hash::make('password123'),
-                'role' => 'admin',
+                'role' => 'admin', // Atribut tambahan dari kodemu
                 'email_verified_at' => now(),
             ]
         );
         $admin->assignRole('Admin');
 
-        // Buat akun Seller
+        // 4. GABUNGAN: Buat akun Seller
         $seller = User::firstOrCreate(
             ['email' => 'seller@travel.com'],
             [
                 'name' => 'Seller1',
                 'password' => Hash::make('password123'),
-                'role' => 'seller',
+                'role' => 'seller', // Atribut tambahan dari kodemu
                 'email_verified_at' => now(),
             ]
         );
         $seller->assignRole('Seller');
 
-        // Seed Destinasi saja (produk ditambahkan manual oleh seller)
+        // 5. GABUNGAN: Panggil semua seeder
         $this->call([
-            DestinationSeeder::class,
+            DestinationSeeder::class, // Ada di kodemu & kode temanmu
+            ProductSeeder::class,     // Dari kode temanmu
+            PostSeeder::class,        // Dari kode temanmu
         ]);
     }
 }

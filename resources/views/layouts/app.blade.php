@@ -139,8 +139,8 @@
             flex-shrink: 0;
         }
 
-        /* Cart Badge */
-        .nav-cart {
+        /* Riwayat Button (sebelumnya Cart) */
+        .nav-history {
             position: relative;
             text-decoration: none;
             font-size: 0.875rem;
@@ -154,12 +154,12 @@
             gap: 6px;
         }
 
-        .nav-cart:hover {
+        .nav-history:hover {
             color: var(--brand-ocean);
             background: rgba(13,59,94,0.06);
         }
 
-        .cart-icon {
+        .history-icon {
             width: 18px;
             height: 18px;
             stroke: currentColor;
@@ -435,7 +435,7 @@
                 <span class="nav-logo-text">{{ config('app.name', 'Travel Website') }}</span>
             </a>
 
-            {{-- Nav Links --}}
+{{-- Nav Links --}}
             <div class="nav-links">
                 <a href="/" class="nav-link">Beranda</a>
                 <a href="/destinasi" class="nav-link">Destinasi</a>
@@ -445,14 +445,20 @@
                 <div class="nav-divider"></div>
 
                 @auth
-                    {{-- Keranjang --}}
-                    <a href="/keranjang" class="nav-cart">
-                        <svg class="cart-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-                            <line x1="3" y1="6" x2="21" y2="6"/>
-                            <path d="M16 10a4 4 0 01-8 0"/>
+                    {{-- Tambahan Tombol Dashboard untuk semua user yang sudah login --}}
+                    <a href="{{ route('dashboard') }}" class="nav-link" style="font-weight: 500;">
+                        Dashboard Saya
+                    </a>
+
+                    {{-- Riwayat Pembelian dengan Ikon Struk Belanja Baru --}}
+                    <a href="{{ route('transactions.history') }}" class="nav-history">
+                        <svg class="history-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 7h6"></path>
+                            <path d="M9 11h6"></path>
+                            <path d="M9 15h4"></path>
+                            <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16l-3-2-2 2-2-2-2 2-2-2-3 2z"></path>
                         </svg>
-                        Keranjang
+                        Riwayat Pembelian
                     </a>
 
                     @if(auth()->user()->isAdmin())
@@ -471,8 +477,7 @@
                     <a href="/login" class="btn-login">Masuk</a>
                     <a href="/register" class="btn-register">Daftar Gratis</a>
                 @endauth
-            </div>
-        </div>
+            </div>       
     </nav>
 
     {{-- ──────────────────────────────── FLASH MESSAGES ──── --}}

@@ -12,7 +12,18 @@
     <div class="grid grid-cols-3 gap-6">
         @forelse($destinations as $destination)
             <div class="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden">
-                <div class="bg-blue-100 h-48 flex items-center justify-center text-6xl">🏝️</div>
+                
+                {{-- Bagian Gambar Dinamis atau Fallback Emoji --}}
+                @if($destination->image)
+                    <img src="{{ asset('storage/' . $destination->image) }}" 
+                         alt="Foto {{ $destination->name }}" 
+                         class="w-full h-48 object-cover">
+                @else
+                    <div class="bg-blue-100 h-48 flex items-center justify-center text-6xl">
+                        🏝️
+                    </div>
+                @endif
+
                 <div class="p-5">
                     <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
                         {{ $destination->category }}
