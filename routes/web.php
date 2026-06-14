@@ -79,7 +79,6 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
 // --------------------------------------------------------
 // Menggunakan kodemu dari branch Fitur-OutdoorStore karena lebih lengkap
 Route::middleware(['auth', 'role:Seller'])->prefix('seller')->name('seller.')->group(function () {
-    Route::get('/dashboard', [App\Http\Controllers\Seller\ProductController::class, 'dashboard'])->name('dashboard');
     Route::resource('products', App\Http\Controllers\Seller\ProductController::class);
 });
 

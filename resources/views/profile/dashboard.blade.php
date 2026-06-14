@@ -199,21 +199,58 @@
              MENU KHUSUS SELLER / PENJUAL 
         ======================================================== --}}
         @role('Seller')
+
+        {{-- Stats Ringkasan Toko --}}
+        @php
+            $sellerProducts = \App\Models\Product::where('seller_id', auth()->id())->get();
+            $totalProducts = $sellerProducts->count();
+            $totalStock = $sellerProducts->sum('stock');
+            $avgRating = $sellerProducts->count() > 0 ? number_format($sellerProducts->avg('rating'), 1) : '0.0';
+        @endphp
+
         <div class="feature-card seller-card">
-            <div class="card-icon icon-sand">🛍️</div>
-            <h3>Toko Suvenir Saya</h3>
-            <p>Kelola etalase produk, perbarui stok barang, dan lihat ulasan dari pelanggan Anda.</p>
-            <a href="/seller/shop" class="card-btn">
+            <div class="card-icon icon-sand">📦</div>
+            <h3 style="font-size:2.2rem; font-weight:700; color:var(--brand-ink); margin-bottom:0.2rem;">{{ $totalProducts }}</h3>
+            <p style="margin:0;">Total Produk di Toko Anda</p>
+        </div>
+
+        <div class="feature-card seller-card">
+            <div class="card-icon icon-sand">📊</div>
+            <h3 style="font-size:2.2rem; font-weight:700; color:var(--brand-ink); margin-bottom:0.2rem;">{{ $totalStock }}</h3>
+            <p style="margin:0;">Total Stok Tersedia</p>
+        </div>
+
+        <div class="feature-card seller-card">
+            <div class="card-icon icon-sand">⭐</div>
+            <h3 style="font-size:2.2rem; font-weight:700; color:var(--brand-ink); margin-bottom:0.2rem;">{{ $avgRating }}</h3>
+            <p style="margin:0;">Rating Rata-rata Produk</p>
+        </div>
+
+        {{-- Aksi Seller --}}
+        <div class="feature-card seller-card">
+            <div class="card-icon icon-sand">🏪</div>
+            <h3>Kelola Katalog Produk</h3>
+            <p>Kelola etalase produk, perbarui stok barang, edit harga, dan lihat daftar produk toko Anda.</p>
+            <a href="{{ route('seller.products.index') }}" class="card-btn">
                 Kelola Toko <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
         </div>
 
         <div class="feature-card seller-card">
-            <div class="card-icon icon-sand">📦</div>
-            <h3>Pesanan Masuk</h3>
-            <p>Proses pesanan baru, perbarui status pengiriman, dan tanggapi permintaan pembeli.</p>
-            <a href="/seller/orders" class="card-btn">
-                Lihat Pesanan <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <div class="card-icon icon-sand">➕</div>
+            <h3>Tambah Produk Baru</h3>
+            <p>Tambahkan produk baru ke etalase toko Anda lengkap dengan gambar, harga, dan deskripsi.</p>
+            <a href="{{ route('seller.products.create') }}" class="card-btn">
+                Tambah Produk <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+
+        <div class="feature-card seller-card">
+            <div class="card-icon icon-sand">👁️</div>
+            <h3>Lihat Toko Publik</h3>
+            <p>Lihat tampilan toko Anda seperti yang dilihat oleh pelanggan di halaman publik.</p>
+            <a href="/toko" class="card-btn">
+                Jelajahi Toko <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
         </div>
         @endrole

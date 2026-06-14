@@ -466,7 +466,7 @@
                     @endif
 
                     @if(auth()->user()->isSeller())
-                        <a href="/seller/dashboard" class="badge-seller">Seller</a>
+                        <a href="/dashboard" class="badge-seller">Seller</a>
                     @endif
 
                     <form method="POST" action="/logout" style="display:inline;">

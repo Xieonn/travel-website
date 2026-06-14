@@ -237,7 +237,7 @@
 
     <div class="page-top">
         <div>
-            <a href="{{ route('seller.dashboard') }}" class="btn-back">← Dashboard</a>
+            <a href="{{ route('dashboard') }}" class="btn-back">← Dashboard</a>
             <h1>Katalog Produk Toko</h1>
         </div>
         <a href="{{ route('seller.products.create') }}" class="btn-add-product">+ Tambah Produk</a>

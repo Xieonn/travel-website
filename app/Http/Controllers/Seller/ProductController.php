@@ -10,15 +10,6 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function dashboard()
-    {
-        $products = Product::where('seller_id', Auth::id())->get();
-        $totalProducts = $products->count();
-        $totalStock = $products->sum('stock');
-        $avgRating = $products->avg('rating') ?? 0;
-        return view('seller.dashboard', compact('totalProducts', 'totalStock', 'avgRating'));
-    }
-
     public function index()
     {
         $products = Product::where('seller_id', Auth::id())->latest()->get();
