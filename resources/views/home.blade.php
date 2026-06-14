@@ -18,6 +18,41 @@
         </div>
     </div>
 
+    {{-- Section Berita Terkini --}}
+    <div class="mt-12 mb-12">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Berita Terkini</h2>
+        <p class="text-gray-500 mb-6">Informasi dan update terbaru seputar destinasi dan perjalanan</p>
+
+        <div class="grid grid-cols-3 gap-6">
+            @forelse($beritaTerbaru as $item)
+                <div class="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden">
+                    
+                    {{-- Menampilkan Thumbnail Berita atau Fallback Emoji --}}
+                    @if($item->thumbnail)
+                        <img src="{{ asset('storage/' . $item->thumbnail) }}" 
+                             alt="{{ $item->title }}" 
+                             class="w-full h-48 object-cover">
+                    @else
+                        <div class="bg-yellow-100 h-48 flex items-center justify-center text-5xl">📰</div>
+                    @endif
+
+                    <div class="p-4">
+                        <p class="text-xs text-gray-400 mb-1">{{ $item->created_at->format('d M Y') }}</p>
+                        <h3 class="font-bold text-lg text-gray-800 line-clamp-1">{{ $item->title }}</h3>
+                        <p class="text-gray-600 text-sm mt-2 line-clamp-2">{{ strip_tags($item->content) }}</p>
+                        <a href="/berita/{{ $item->id }}"
+                           class="mt-3 inline-block text-blue-600 hover:underline text-sm font-medium">
+                            Baca Selengkapnya →
+                        </a>
+                    </div>
+                </div>
+            @empty
+                <p class="text-gray-400 col-span-3">Belum ada berita terbaru saat ini.</p>
+            @endforelse
+        </div>
+    </div>
+
+
     {{-- Section Destinasi Unggulan --}}
     <div class="mb-12">
         <h2 class="text-3xl font-bold text-gray-800 mb-2">Destinasi Unggulan</h2>
