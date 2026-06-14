@@ -9,6 +9,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PaymentNotificationController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\Admin\UserController;
 use App\Models\Product;
 
 // --------------------------------------------------------
@@ -61,15 +62,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // --------------------------------------------------------
 // HALAMAN KHUSUS ADMIN
 // --------------------------------------------------------
-Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
     
-
     // Manajemen Destinasi (Sudah diperbaiki, semua rute sekarang masuk dalam grup Admin)
-    Route::get('/destinasi/tambah', [DestinationController::class, 'create'])->name('admin.destinasi.create');
-    Route::post('/destinasi', [DestinationController::class, 'store'])->name('admin.destinasi.store');
-    Route::get('/destinasi/{id}/edit', [DestinationController::class, 'edit'])->name('admin.destinasi.edit');
-    Route::put('/destinasi/{id}', [DestinationController::class, 'update'])->name('admin.destinasi.update');
-    Route::delete('/destinasi/{id}', [DestinationController::class, 'destroy'])->name('admin.destinasi.destroy');
+    Route::get('/destinasi/tambah', [DestinationController::class, 'create'])->name('destinasi.create');
+    Route::post('/destinasi', [DestinationController::class, 'store'])->name('destinasi.store');
+    Route::get('/destinasi/{id}/edit', [DestinationController::class, 'edit'])->name('destinasi.edit');
+    Route::put('/destinasi/{id}', [DestinationController::class, 'update'])->name('destinasi.update');
+    Route::delete('/destinasi/{id}', [DestinationController::class, 'destroy'])->name('destinasi.destroy');
+
+    //Manajemen User
+    Route::resource('users', UserController::class);
 });
 
 // --------------------------------------------------------
