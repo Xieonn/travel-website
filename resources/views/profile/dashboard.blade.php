@@ -184,14 +184,6 @@
             </a>
         </div>
 
-        <div class="feature-card admin-card">
-            <div class="card-icon icon-coral">📊</div>
-            <h3>Laporan Transaksi</h3>
-            <p>Lihat ringkasan seluruh transaksi, pembayaran tiket, dan pendapatan dari toko suvenir.</p>
-            <a href="/admin/transactions" class="card-btn">
-                Lihat Laporan <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-        </div>
         @endrole
 
 

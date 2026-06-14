@@ -62,9 +62,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // HALAMAN KHUSUS ADMIN
 // --------------------------------------------------------
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return 'Dashboard Admin - coming soon';
-    });
+    
 
     // Manajemen Destinasi (Sudah diperbaiki, semua rute sekarang masuk dalam grup Admin)
     Route::get('/destinasi/tambah', [DestinationController::class, 'create'])->name('admin.destinasi.create');

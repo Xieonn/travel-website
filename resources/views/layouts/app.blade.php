@@ -462,7 +462,7 @@
                     </a>
 
                     @if(auth()->user()->isAdmin())
-                        <a href="/admin/dashboard" class="badge-admin">Admin</a>
+                        <a href="/dashboard" class="badge-admin">Admin</a>
                     @endif
 
                     @if(auth()->user()->isSeller())
