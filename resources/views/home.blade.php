@@ -107,13 +107,16 @@
                 @forelse($products as $product)
                 @php
                     $productImage = $product->image;
-                    if (!$productImage) {
-                        $fallback = ['terra45.webp', 'vectiv.webp', 'tenda.webp', 'jaket.webp'];
-                        $productImage = asset('images/' . $fallback[$loop->index % count($fallback)]);
-                    } elseif (!\Illuminate\Support\Str::startsWith($productImage, ['http://', 'https://'])) {
-                        $productImage = asset('storage/' . $productImage);
+                    if ($productImage && !\Illuminate\Support\Str::startsWith($productImage, ['http://', 'https://'])) {
+                        if (file_exists(public_path('images/' . $productImage))) {
+                            $productImage = asset('images/' . $productImage);
+                        } else {
+                            $productImage = asset('storage/' . $productImage);
+                        }
+                    } elseif (!$productImage) {
+                        $productImage = asset('images/logo_web.jpeg');
                     }
-                    $rating = ($product->rating ?? 0) > 0 ? number_format($product->rating, 1) : ['4.5','4.6','4.7','4.8'][$loop->index % 4];
+                    $rating = number_format($product->rating ?? 0, 1);
                 @endphp
                 <div class="home-popular-card">
                     <div class="home-popular-card-image">

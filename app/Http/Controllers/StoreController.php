@@ -43,13 +43,15 @@ class StoreController extends Controller
                 ->exists();
         }
 
-        // Gambar produk
         $image = $product->image;
-        if (!$image) {
-            $fallback = ['terra45.webp', 'vectiv.webp', 'tenda.webp', 'jaket.webp'];
-            $image = asset('images/' . $fallback[$product->id % 4]);
-        } elseif (!\Illuminate\Support\Str::startsWith($image, ['http://', 'https://'])) {
-            $image = asset('storage/' . $image);
+        if ($image && !\Illuminate\Support\Str::startsWith($image, ['http://', 'https://'])) {
+            if (file_exists(public_path('images/' . $image))) {
+                $image = asset('images/' . $image);
+            } else {
+                $image = asset('storage/' . $image);
+            }
+        } elseif (!$image) {
+            $image = asset('images/logo_web.jpeg');
         }
 
         return view('products.show', compact(

@@ -117,57 +117,22 @@
         <div id="productGrid" class="product-grid">
             @forelse($products as $product)
             @php
-            // --- GABUNGAN KODE GAMBAR ---
             $image = $product->image;
-            if (!$image) {
-                // Gunakan gambar dummy temanmu jika di database kosong
-                $daftarGambar = ['terra45.webp', 'vectiv.webp', 'tenda.webp', 'jaket.webp'];
-                $namaGambar = $daftarGambar[$loop->index % count($daftarGambar)];
-                $image = asset('images/' . $namaGambar);
-            } elseif (!\Illuminate\Support\Str::startsWith($image, ['http://', 'https://'])) {
-                // Path storage dari kodemu
-                $image = asset('storage/' . $image);
+            if ($image && !\Illuminate\Support\Str::startsWith($image, ['http://', 'https://'])) {
+                if (file_exists(public_path('images/' . $image))) {
+                    $image = asset('images/' . $image);
+                } else {
+                    $image = asset('storage/' . $image);
+                }
+            } elseif (!$image) {
+                $image = asset('images/logo_web.jpeg'); // Generic fallback
             }
 
             $categoryLabel = $product->category ?? 'Outdoor';
-            $nameLower = strtolower($product->name);
-            if (str_contains($nameLower, 'jaket') || str_contains($nameLower, 'jacket')) {
-                $subCategory = 'Jaket · Outdoor';
-            } elseif (str_contains($nameLower, 'sepatu') || str_contains($nameLower, 'shoe') || str_contains($nameLower, 'boot')) {
-                $subCategory = 'Sepatu · Hiking';
-            } elseif (str_contains($nameLower, 'tenda') || str_contains($nameLower, 'tent')) {
-                $subCategory = 'Tenda · Camping';
-            } elseif (str_contains($nameLower, 'carrier') || str_contains($nameLower, 'backpack') || str_contains($nameLower, 'tas')) {
-                $subCategory = 'Tas · Carrier';
-            } elseif (str_contains($nameLower, 'sleeping') || str_contains($nameLower, 'matras')) {
-                $subCategory = 'Sleeping Gear';
-            } elseif (str_contains($nameLower, 'botol') || str_contains($nameLower, 'bottle') || str_contains($nameLower, 'water')) {
-                $subCategory = 'Botol · Hydration';
-            } elseif (str_contains($nameLower, 'headlamp') || str_contains($nameLower, 'senter') || str_contains($nameLower, 'lamp')) {
-                $subCategory = 'Aksesoris · Lighting';
-            } elseif (strtolower($product->category) === 'pakaian') {
-                $subCategory = 'Pakaian · Outdoor';
-            } else {
-                $subCategory = ucfirst($product->category ?? 'Outdoor');
-            }
+            $subCategory = ucfirst($product->category ?? 'Outdoor');
 
-            // --- GABUNGAN RATING & SOLD COUNT ---
-            // Cek nilai DB kodemu dulu, jika 0 pakai random temanmu
-            $dbRating = $product->rating ?? 0;
-            if ($dbRating > 0) {
-                $rating = number_format($dbRating, 1);
-            } else {
-                $ratings = ['4.5', '4.6', '4.7', '4.8', '4.9'];
-                $rating = $ratings[$loop->index % count($ratings)];
-            }
-
-            $dbSold = $product->sold_count ?? 0;
-            if ($dbSold > 0) {
-                $soldCount = $dbSold;
-            } else {
-                $sold = [42, 56, 73, 88, 96, 103, 120, 128];
-                $soldCount = $sold[$loop->index % count($sold)];
-            }
+            $rating = number_format($product->rating ?? 0, 1);
+            $soldCount = $product->sold_count ?? 0;
             @endphp
 
             <article class="product-card"
@@ -252,23 +217,18 @@
             <div class="popular-carousel" id="popularCarousel">
                 @foreach($products->take(8) as $product)
                 @php
-                // --- GABUNGAN GAMBAR & RATING POPULAR PICKS ---
                 $popularImage = $product->image;
-                if (!$popularImage) {
-                    $daftarGambarPopuler = ['terra45.webp', 'vectiv.webp', 'tenda.webp', 'jaket.webp'];
-                    $namaGambarPopuler = $daftarGambarPopuler[$loop->index % count($daftarGambarPopuler)];
-                    $popularImage = asset('images/' . $namaGambarPopuler);
-                } elseif (!\Illuminate\Support\Str::startsWith($popularImage, ['http://', 'https://'])) {
-                    $popularImage = asset('storage/' . $popularImage);
+                if ($popularImage && !\Illuminate\Support\Str::startsWith($popularImage, ['http://', 'https://'])) {
+                    if (file_exists(public_path('images/' . $popularImage))) {
+                        $popularImage = asset('images/' . $popularImage);
+                    } else {
+                        $popularImage = asset('storage/' . $popularImage);
+                    }
+                } elseif (!$popularImage) {
+                    $popularImage = asset('images/logo_web.jpeg');
                 }
                 
-                $dbRatingPop = $product->rating ?? 0;
-                if ($dbRatingPop > 0) {
-                    $rating = number_format($dbRatingPop, 1);
-                } else {
-                    $ratings = ['4.5', '4.6', '4.7', '4.8', '4.9'];
-                    $rating = $ratings[$loop->index % count($ratings)];
-                }
+                $rating = number_format($product->rating ?? 0, 1);
                 @endphp
 
                 <div class="popular-card">
