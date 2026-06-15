@@ -19,6 +19,10 @@ Route::get('/', [HomeController::class, 'index']);
 Route::get('/destinasi', [DestinationController::class, 'index']);
 Route::get('/destinasi/{id}', [DestinationController::class, 'show']);
 Route::get('/toko', [StoreController::class, 'index']);
+Route::get('/tentang-kami', function () {return view('tentang-kami');});
+Route::get('/layanan', function () {return view('layanan');});
+Route::get('/kebijakan-privasi', function () {return view('kebijakan-privasi');});
+
 
 // Midtrans Callback (Harus di luar Auth)
 Route::post('/midtrans/callback', [PaymentNotificationController::class, 'handle']);

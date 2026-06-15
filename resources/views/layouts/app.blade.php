@@ -516,9 +516,6 @@
                 <h4>Jelajahi</h4>
                 <ul>
                     <li><a href="/destinasi">Semua Destinasi</a></li>
-                    <li><a href="/destinasi?kategori=alam">Wisata Alam</a></li>
-                    <li><a href="/destinasi?kategori=budaya">Wisata Budaya</a></li>
-                    <li><a href="/destinasi?kategori=kuliner">Wisata Kuliner</a></li>
                 </ul>
             </div>
 
@@ -528,7 +525,7 @@
                 <ul>
                     <li><a href="/toko">Toko Produk</a></li>
                     <li><a href="/berita">Berita Travel</a></li>
-                    <li><a href="/tentang">Tentang Kami</a></li>
+                    <li><a href="/tentang-kami">Tentang Kami</a></li>
                     <li><a href="/layanan">Pusat Bantuan</a></li>
                 </ul>
             </div>
@@ -537,9 +534,7 @@
             <div class="footer-col">
                 <h4>Legal</h4>
                 <ul>
-                    <li><a href="/privasi">Kebijakan Privasi</a></li>
-                    <li><a href="/syarat">Syarat & Ketentuan</a></li>
-                    <li><a href="/cookie">Kebijakan Cookie</a></li>
+                    <li><a href="/kebijakan-privasi">Kebijakan Privasi</a></li>
                 </ul>
             </div>
 
@@ -548,8 +543,6 @@
         <div class="footer-bottom">
             <span>© {{ date('Y') }} {{ config('app.name', 'Travel Website') }}. Seluruh hak dilindungi.</span>
             <div style="display:flex; gap:1.5rem;">
-                <a href="/privasi">Privasi</a>
-                <a href="/syarat">Syarat</a>
                 <a href="/kontak">Kontak</a>
             </div>
         </div>
