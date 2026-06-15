@@ -174,7 +174,9 @@
                 data-category="{{ $product->category }}"
                 data-name="{{ strtolower($product->name) }}"
                 data-search="{{ strtolower($product->name . ' ' . $product->description . ' ' . $product->category) }}"
-                data-price="{{ (int) $product->price }}">
+                data-price="{{ (int) $product->price }}"
+                style="cursor:pointer;"
+                onclick="if(!event.target.closest('button')) window.location.href='{{ route('products.show', $product) }}'">
 
                 <div class="product-image">
                     <img src="{{ $image }}" alt="{{ $product->name }}" loading="lazy">

@@ -19,6 +19,13 @@ Route::get('/', [HomeController::class, 'index']);
 Route::get('/destinasi', [DestinationController::class, 'index']);
 Route::get('/destinasi/{id}', [DestinationController::class, 'show']);
 Route::get('/toko', [StoreController::class, 'index']);
+Route::get('/toko/{product}', [StoreController::class, 'show'])->name('products.show');
+
+// Review produk (wajib login)
+Route::middleware('auth')->group(function () {
+    Route::post('/toko/{product}/review', [StoreController::class, 'storeReview'])->name('products.review.store');
+    Route::delete('/toko/{product}/review', [StoreController::class, 'destroyReview'])->name('products.review.destroy');
+});
 Route::get('/tentang-kami', function () {return view('tentang-kami');});
 Route::get('/layanan', function () {return view('layanan');});
 Route::get('/kebijakan-privasi', function () {return view('kebijakan-privasi');});

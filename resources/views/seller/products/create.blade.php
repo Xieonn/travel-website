@@ -278,15 +278,7 @@
                     <input type="number" name="stock" id="stock" value="{{ old('stock', 0) }}" min="0" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="rating">Rating (0 - 5)</label>
-                    <input type="number" name="rating" id="rating" value="{{ old('rating', 0) }}" min="0" max="5" step="0.1">
-                </div>
 
-                <div class="form-group">
-                    <label for="sold_count">Jumlah Terjual</label>
-                    <input type="number" name="sold_count" id="sold_count" value="{{ old('sold_count', 0) }}" min="0">
-                </div>
 
                 <div class="form-group full-width">
                     <label for="description">Deskripsi Produk</label>

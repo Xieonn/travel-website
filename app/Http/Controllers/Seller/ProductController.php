@@ -29,14 +29,12 @@ class ProductController extends Controller
             'price'       => 'required|numeric|min:0',
             'stock'       => 'required|integer|min:0',
             'description' => 'required|string',
-            'rating'      => 'nullable|numeric|min:0|max:5',
-            'sold_count'  => 'nullable|integer|min:0',
             'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         $validated['seller_id'] = Auth::id();
-        $validated['rating'] = $validated['rating'] ?? 0;
-        $validated['sold_count'] = $validated['sold_count'] ?? 0;
+        $validated['rating'] = 0;
+        $validated['sold_count'] = 0;
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');
@@ -68,13 +66,8 @@ class ProductController extends Controller
             'price'       => 'required|numeric|min:0',
             'stock'       => 'required|integer|min:0',
             'description' => 'required|string',
-            'rating'      => 'nullable|numeric|min:0|max:5',
-            'sold_count'  => 'nullable|integer|min:0',
             'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
-
-        $validated['rating'] = $validated['rating'] ?? $product->rating;
-        $validated['sold_count'] = $validated['sold_count'] ?? $product->sold_count;
 
         if ($request->hasFile('image')) {
             // Hapus gambar lama jika ada
