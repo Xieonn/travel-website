@@ -19,8 +19,8 @@ class PostSeeder extends Seeder
 
         DB::table('posts')->insert([
             [
-                'title' => 'Tips Traveling Hemat ke Bali',
-                'content' => 'Bali selalu menjadi destinasi favorit wisatawan. Dengan perencanaan yang tepat, Anda bisa menikmati keindahan Bali tanpa menguras kantong.',
+                'title' => 'Tips Healling ke Gunung Dengan Budget Terbatas',
+                'content' => 'Berikut adalah beberapa tips untuk melakukan healing ke gunung dengan budget yang terbatas:',
                 'category' => 'Tips',
                 'image' => null,
                 'user_id' => $user->id,
@@ -28,8 +28,8 @@ class PostSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'title' => 'Keajaiban Bawah Laut Raja Ampat',
-                'content' => 'Raja Ampat dikenal sebagai salah satu destinasi diving terbaik di dunia. Keanekaragaman hayati lautnya yang luar biasa menjadikannya surga bagi para penyelam.',
+                'title' => 'Keindahan Pemandangan dari Puncak Gunung',
+                'content' => 'Pemandangan dari puncak gunung sangat memukau dan memberikan sensasi yang luar biasa. Berikut adalah beberapa tempat gunung yang wajib dikunjungi:',
                 'category' => 'Destinasi',
                 'image' => null,
                 'user_id' => $user->id,
@@ -37,8 +37,8 @@ class PostSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'title' => 'Panduan Mendaki Gunung Semeru',
-                'content' => 'Gunung Semeru adalah puncak tertinggi di Pulau Jawa. Pendakian ke puncak Mahameru membutuhkan persiapan fisik dan mental yang matang.',
+                'title' => 'Panduan Mendaki Gunung untuk Pemula',
+                'content' => 'Mendaki gunung bisa menjadi pengalaman yang menyenangkan dan menantang. Berikut adalah panduan untuk pemula yang ingin mencoba mendaki gunung:',
                 'category' => 'Petualangan',
                 'image' => null,
                 'user_id' => $user->id,
@@ -46,17 +46,17 @@ class PostSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'title' => 'Kuliner Wajib Coba di Yogyakarta',
-                'content' => 'Yogyakarta bukan hanya terkenal dengan candi dan budayanya, tapi juga kulinernya yang lezat. Mulai dari gudeg, bakpia, hingga sate klathak.',
-                'category' => 'Kuliner',
+                'title' => 'Pemandangan Danau yang Menakjubkan di Sekitar Gunung',
+                'content' => 'Danau-danau di sekitar gunung sering kali menawarkan pemandangan yang memukau dan suasana yang tenang. Berikut adalah beberapa danau yang wajib dikunjungi:',
+                'category' => 'Destinasi',
                 'image' => null,
                 'user_id' => $user->id,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'title' => 'Menikmati Sunrise di Gunung Bromo',
-                'content' => 'Pemandangan matahari terbit di Gunung Bromo adalah salah satu yang paling spektakuler di Indonesia.',
+                'title' => 'Menikmati Sunrise di Gunung',
+                'content' => 'Penikmatan sunrise di gunung adalah pengalaman yang luar biasa. Berikut adalah beberapa tips untuk menikmati sunrise di gunung dengan sempurna:',
                 'category' => 'Petualangan',
                 'image' => null,
                 'user_id' => $user->id,
@@ -64,8 +64,8 @@ class PostSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'title' => 'Wisata Budaya di Yogyakarta',
-                'content' => 'Yogyakarta menyimpan kekayaan budaya yang luar biasa. Dari Keraton, Candi Borobudur hingga Prambanan.',
+                'title' => 'Wisata Bersejarah di Jambi',
+                'content' => 'Jambi memiliki banyak situs bersejarah yang menarik untuk dikunjungi. Mulai dari candi-candi kuno hingga istana-istana kerajaan yang dulu pernah berdiri.',
                 'category' => 'Budaya',
                 'image' => null,
                 'user_id' => $user->id,
