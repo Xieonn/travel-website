@@ -19,12 +19,12 @@
         <div class="hero-overlay"></div>
 
         <div class="hero-copy">
-            <span class="hero-kicker">GEAR UP, EXPLORE MORE</span>
-            <h1>Perlengkapan Outdoor untuk Pendakian yang Siap Dipakai</h1>
+            <span class="hero-kicker">Jambi Adventure Store</span>
+            <h1>Perlengkapan Outdoor Premium</h1>
             <p>
                 Koleksi perlengkapan hiking dan pakaian outdoor terbaik untuk
                 setiap perjalananmu. Tahan banting, nyaman digunakan, dan
-                siap menemani petualangan tanpa batas.
+                siap menemani petualanganmu.
             </p>
 
             <div class="hero-actions">
@@ -119,13 +119,13 @@
             @php
             $image = $product->image;
             if ($image && !\Illuminate\Support\Str::startsWith($image, ['http://', 'https://'])) {
-                if (file_exists(public_path('images/' . $image))) {
-                    $image = asset('images/' . $image);
-                } else {
-                    $image = asset('storage/' . $image);
-                }
+            if (file_exists(public_path('images/' . $image))) {
+            $image = asset('images/' . $image);
+            } else {
+            $image = asset('storage/' . $image);
+            }
             } elseif (!$image) {
-                $image = asset('images/logo_web.jpeg'); // Generic fallback
+            $image = asset('images/logo_web.jpeg'); // Generic fallback
             }
 
             $categoryLabel = $product->category ?? 'Outdoor';
@@ -219,15 +219,15 @@
                 @php
                 $popularImage = $product->image;
                 if ($popularImage && !\Illuminate\Support\Str::startsWith($popularImage, ['http://', 'https://'])) {
-                    if (file_exists(public_path('images/' . $popularImage))) {
-                        $popularImage = asset('images/' . $popularImage);
-                    } else {
-                        $popularImage = asset('storage/' . $popularImage);
-                    }
-                } elseif (!$popularImage) {
-                    $popularImage = asset('images/logo_web.jpeg');
+                if (file_exists(public_path('images/' . $popularImage))) {
+                $popularImage = asset('images/' . $popularImage);
+                } else {
+                $popularImage = asset('storage/' . $popularImage);
                 }
-                
+                } elseif (!$popularImage) {
+                $popularImage = asset('images/logo_web.jpeg');
+                }
+
                 $rating = number_format($product->rating ?? 0, 1);
                 @endphp
 
