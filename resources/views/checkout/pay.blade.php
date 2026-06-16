@@ -55,20 +55,23 @@
     <script>
         document.getElementById('pay-button').addEventListener('click', function () {
             snap.pay('{{ $snapToken }}', {
-                onSuccess: function (result) { 
-                    alert("Pembayaran berhasil!");
-                    window.location.href = '/'; 
+                onSuccess: function (result) {
+                    // Hapus keranjang dari localStorage setelah pembayaran berhasil
+                    localStorage.removeItem('outdoor_cart');
+                    alert("Pembayaran berhasil! Terima kasih atas pembelian Anda.");
+                    window.location.href = '/';
                 },
-                onPending: function (result) { 
-                    alert("Menunggu pembayaran!");
-                    window.location.href = '/'; 
+                onPending: function (result) {
+                    alert("Menunggu pembayaran! Selesaikan pembayaran Anda.");
+                    window.location.href = '/';
                 },
-                onError: function (result) { 
-                    alert("Pembayaran gagal!");
-                    window.location.href = '/'; 
+                onError: function (result) {
+                    alert("Pembayaran gagal! Silakan coba lagi.");
+                    window.location.href = '/toko';
                 },
-                onClose: function () { 
-                    window.location.href = '/'; 
+                onClose: function () {
+                    // User menutup popup tanpa menyelesaikan pembayaran
+                    window.location.href = '/toko';
                 }
             });
         });

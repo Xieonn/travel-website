@@ -47,4 +47,16 @@ class Product extends Model
     {
         return $this->reviews()->count();
     }
+
+    /**
+     * Kurangi stok secara aman — tidak akan pernah turun di bawah 0
+     */
+    public function decrementStock(int $qty): void
+    {
+        \Illuminate\Support\Facades\DB::table('products')
+            ->where('id', $this->id)
+            ->update([
+                'stock' => \Illuminate\Support\Facades\DB::raw("GREATEST(0, stock - {$qty})")
+            ]);
+    }
 }
