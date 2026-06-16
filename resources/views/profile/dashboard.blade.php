@@ -174,7 +174,16 @@
                 Tambah Destinasi <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
         </div>
-        
+
+        <div class="feature-card admin-card">
+            <div class="card-icon icon-coral">📝</div>
+            <h3>Kelola Berita</h3>
+            <p>Tambahkan berita baru, edit konten yang sudah ada, dan pantau komentar pembaca di halaman berita.</p>
+            <a href="/admin/berita" class="card-btn">
+                Kelola Berita <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+
         <div class="feature-card admin-card">
             <div class="card-icon icon-coral">👑</div>
             <h3>Kelola Pengguna</h3>

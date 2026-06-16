@@ -40,6 +40,16 @@ class DatabaseSeeder extends Seeder
 
         $seller->assignRole('Seller');
 
+        $user = User::firstOrCreate(
+            ['email' => 'user@gmail.com'],
+            [
+                'name' => 'User1',
+                'password' => Hash::make('password123'),
+                'email_verified_at' => now(),
+            ]
+        );
+
+        $user->assignRole('User');
 
         $this->call([
             DestinationSeeder::class,

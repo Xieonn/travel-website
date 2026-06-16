@@ -84,6 +84,16 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
     //Manajemen User
     Route::resource('users', UserController::class);
+
+    // Manajemen Berita
+    Route::get('/berita', [App\Http\Controllers\PostController::class, 'adminIndex'])->name('admin.posts.index');
+    Route::get('/berita/create', [App\Http\Controllers\PostController::class, 'create'])->name('admin.posts.create');
+    Route::post('/berita', [App\Http\Controllers\PostController::class, 'store'])->name('admin.posts.store');
+
+    // 🔴 KELOMPOK 2: Rute Dinamis (ADA {id} - WAJIB DI BAWAH)
+    Route::get('/berita/{id}/edit', [App\Http\Controllers\PostController::class, 'edit'])->name('admin.posts.edit');
+    Route::put('/berita/{id}', [App\Http\Controllers\PostController::class, 'update'])->name('admin.posts.update');
+    Route::delete('/berita/{id}', [App\Http\Controllers\PostController::class, 'destroy'])->name('admin.posts.destroy');
 });
 
 // --------------------------------------------------------
