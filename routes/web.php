@@ -75,25 +75,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // --------------------------------------------------------
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
     
-    // Manajemen Destinasi (Sudah diperbaiki, semua rute sekarang masuk dalam grup Admin)
-    Route::get('/destinasi/tambah', [DestinationController::class, 'create'])->name('destinasi.create');
-    Route::post('/destinasi', [DestinationController::class, 'store'])->name('destinasi.store');
-    Route::get('/destinasi/{id}/edit', [DestinationController::class, 'edit'])->name('destinasi.edit');
-    Route::put('/destinasi/{id}', [DestinationController::class, 'update'])->name('destinasi.update');
-    Route::delete('/destinasi/{id}', [DestinationController::class, 'destroy'])->name('destinasi.destroy');
+    // Manajemen Destinasi
+    Route::get('/destinasi', [App\Http\Controllers\DestinationController::class, 'adminIndex'])->name('destinasi.index');
+    Route::get('/destinasi/create', [App\Http\Controllers\DestinationController::class, 'create'])->name('destinasi.create');
+    Route::post('/destinasi', [App\Http\Controllers\DestinationController::class, 'store'])->name('destinasi.store');
+    Route::get('/destinasi/{id}/edit', [App\Http\Controllers\DestinationController::class, 'edit'])->name('admin.destinasi.edit');
+    Route::put('/destinasi/{id}', [App\Http\Controllers\DestinationController::class, 'update'])->name('destinasi.update');
+    Route::delete('/destinasi/{id}', [App\Http\Controllers\DestinationController::class, 'destroy'])->name('destinasi.destroy');
 
-    //Manajemen User
+    // Manajemen User
     Route::resource('users', UserController::class);
 
     // Manajemen Berita
-    Route::get('/berita', [App\Http\Controllers\PostController::class, 'adminIndex'])->name('admin.posts.index');
-    Route::get('/berita/create', [App\Http\Controllers\PostController::class, 'create'])->name('admin.posts.create');
-    Route::post('/berita', [App\Http\Controllers\PostController::class, 'store'])->name('admin.posts.store');
-
-    // 🔴 KELOMPOK 2: Rute Dinamis (ADA {id} - WAJIB DI BAWAH)
-    Route::get('/berita/{id}/edit', [App\Http\Controllers\PostController::class, 'edit'])->name('admin.posts.edit');
-    Route::put('/berita/{id}', [App\Http\Controllers\PostController::class, 'update'])->name('admin.posts.update');
-    Route::delete('/berita/{id}', [App\Http\Controllers\PostController::class, 'destroy'])->name('admin.posts.destroy');
+    Route::get('/berita', [App\Http\Controllers\PostController::class, 'adminIndex'])->name('posts.index');
+    Route::get('/berita/create', [App\Http\Controllers\PostController::class, 'create'])->name('posts.create');
+    Route::post('/berita', [App\Http\Controllers\PostController::class, 'store'])->name('posts.store');
+    Route::get('/berita/{id}/edit', [App\Http\Controllers\PostController::class, 'edit'])->name('posts.edit');
+    Route::put('/berita/{id}', [App\Http\Controllers\PostController::class, 'update'])->name('posts.update');
+    Route::delete('/berita/{id}', [App\Http\Controllers\PostController::class, 'destroy'])->name('posts.destroy');
 });
 
 // --------------------------------------------------------

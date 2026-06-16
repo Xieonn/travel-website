@@ -15,19 +15,26 @@ class DestinationController extends Controller
     public function index()
     {
         $destinations = Destination::latest()->paginate(6);
-        return view('destinations.index', compact('destinations'));
+        // Arahkan ke folder view publik, misal: resources/views/destinasi/index.blade.php
+        return view('destinations.index', compact('destinations')); 
     }
 
-    // Halaman detail satu destinasi
     public function show($id)
     {
         $destination = Destination::findOrFail($id);
-        return view('destinations.show', compact('destination'));
+        // Arahkan ke folder view publik, misal: resources/views/destinasi/show.blade.php
+        return view('destinations.show', compact('destination')); 
     }
 
     // =======================================================
     // HALAMAN KHUSUS ADMIN
     // =======================================================
+
+    public function adminIndex()
+    {
+        $destinations = Destination::latest()->paginate(10);
+        return view('admin.destinasi.index', compact('destinations'));
+    }
 
     // Menampilkan halaman form tambah data
     public function create()
@@ -57,7 +64,7 @@ class DestinationController extends Controller
         // 3. Simpan data ke database
             Destination::create($validated);
 
-            return redirect()->route('dashboard')->with('success', 'Destinasi wisata berhasil ditambahkan!');
+            return redirect()->route('admin.destinasi.index')->with('success', 'Destinasi berhasil ditambahkan!');
         }
         // Menghapus data destinasi
     public function destroy($id)
@@ -73,7 +80,7 @@ class DestinationController extends Controller
         $destination->delete();
 
         // Kembalikan ke halaman sebelumnya (atau beranda) dengan pesan sukses
-        return redirect('/')->with('success', 'Destinasi berhasil dihapus secara permanen.');
+        return redirect()->route('admin.destinasi.index')->with('success', 'Destinasi berhasil dihapus.');
     }
 
 
@@ -113,6 +120,6 @@ class DestinationController extends Controller
         // Perbarui data di database
         $destination->update($validated);
 
-        return redirect()->route('dashboard')->with('success', 'Data destinasi berhasil diperbarui!');
+        return redirect()->route('admin.destinasi.index')->with('success', 'Data destinasi berhasil diperbarui!');
     }
 }
