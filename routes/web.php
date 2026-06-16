@@ -58,6 +58,8 @@ Route::middleware('auth')->group(function () {
         return 'Halaman Keranjang - coming soon';
     });
 
+    Route::get('/checkout/resume/{order_id}', [App\Http\Controllers\CheckoutController::class, 'resume'])->name('checkout.resume');
+
     // Halaman berita
     Route::get('/berita', [PostController::class, 'index']);
     Route::get('/berita/{id}', [PostController::class, 'show']);

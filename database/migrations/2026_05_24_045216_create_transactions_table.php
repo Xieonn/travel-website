@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('total_price', 10, 2);
             $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
+            $table->string('snap_token')->nullable(); // <-- TAMBAHKAN BARIS INI
             $table->timestamps();
         });
     }

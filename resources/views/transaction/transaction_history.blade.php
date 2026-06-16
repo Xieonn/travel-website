@@ -167,6 +167,24 @@
         font-size: 0.95rem;
     }
 
+    /* ── RESUME BUTTON ───────────────────────────────────────── */
+    .btn-resume {
+        display: inline-block;
+        background-color: var(--brand-ocean, #0369a1);
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-resume:hover {
+        background-color: var(--brand-sky, #0284c7);
+        color: white;
+    }
+
     /* ── ORDER FOOTER ────────────────────────────────────────── */
     .order-footer {
         background-color: #FAFCFE;
@@ -312,8 +330,17 @@
 
                 {{-- Bagian Total dan Aksi Tambahan --}}
                 <div class="order-footer">
-                    <span class="total-label">Total Pembayaran:</span>
-                    <span class="total-amount">Rp {{ number_format($totalOrderPrice, 0, ',', '.') }}</span>
+                    <div>
+                        <span class="total-label">Total Pembayaran:</span><br>
+                        <span class="total-amount">Rp {{ number_format($totalOrderPrice, 0, ',', '.') }}</span>
+                    </div>
+                    
+                    {{-- Tombol Lanjutkan Pembayaran (Hanya muncul jika Pending) --}}
+                    @if($firstItem->status === 'pending')
+                        <a href="{{ route('checkout.resume', $orderId) }}" class="btn-resume">
+                            Lanjutkan Pembayaran
+                        </a>
+                    @endif
                 </div>
                 
             </div>

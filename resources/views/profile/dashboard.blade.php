@@ -262,8 +262,8 @@
         ======================================================== --}}
         <div class="feature-card">
             <div class="card-icon icon-blue">🗺️</div>
-            <h3>Destinasi Favorit</h3>
-            <p>Temukan kembali tempat-tempat menakjubkan yang telah Anda simpan ke dalam daftar impian.</p>
+            <h3>Destinasi</h3>
+            <p>Temukan tempat-tempat menakjubkan yang mungkin menarik minat Anda.</p>
             <a href="/destinasi" class="card-btn">
                 Jelajahi <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>

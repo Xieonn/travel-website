@@ -13,7 +13,8 @@ class Transaction extends Model
         'product_id', 
         'quantity', 
         'total_price', 
-        'status'
+        'status',
+        'snap_token'
     ];
 
     // Relasi: Setiap transaksi dimiliki oleh satu User

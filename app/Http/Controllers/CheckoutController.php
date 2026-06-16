@@ -56,15 +56,42 @@ class CheckoutController extends Controller
                     'first_name' => $request->user()->name,
                     'email'      => $request->user()->email,
                 ],
+                'notification_url' => 'https://ardently-scheme-abridge.ngrok-free.dev/midtrans/callback',
             ];
 
             // 5. Dapatkan Snap Token
             $snapToken = Snap::getSnapToken($params);
             
+            // Simpan snap token ke dalam database
+            Transaction::where('order_id', $orderId)->update(['snap_token' => $snapToken]);
+
             return view('checkout.pay', compact('snapToken'));
             
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
+    }
+
+    public function resume($order_id)
+    {
+        // 1. Ambil transaksi yang sesuai
+        $transactions = Transaction::where('order_id', $order_id)
+                                   ->where('user_id', auth()->id())
+                                   ->where('status', 'pending')
+                                   ->get();
+
+        if ($transactions->isEmpty()) {
+            return redirect()->back()->with('error', 'Transaksi tidak ditemukan atau sudah diproses.');
+        }
+
+        // 2. Ambil token yang sudah kita simpan di database sebelumnya
+        $snapToken = $transactions->first()->snap_token;
+
+        if (!$snapToken) {
+            return redirect()->back()->with('error', 'Token pembayaran hilang. Silakan buat pesanan baru.');
+        }
+
+        // 3. Langsung tampilkan view tanpa perlu menghubungi Midtrans API lagi!
+        return view('checkout.pay', compact('snapToken'));
     }
 }
