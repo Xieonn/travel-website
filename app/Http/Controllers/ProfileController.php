@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Menampilkan form edit profil.
      */
     public function edit(Request $request): View
     {
@@ -22,23 +23,44 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the user's profile information.
+     * Memproses pembaruan data profil dan password.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        // 1. Validasi Input (Nama, Email, dan Password)
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        // 2. Masukkan data nama dan email
+        $user->fill([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ]);
+
+        // 3. Jika email berubah, hapus status verifikasinya (Keamanan Breeze)
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        // 4. Jika kolom password diisi, enkripsi dan perbarui
+        if ($request->filled('password')) {
+            $user->password = Hash::make($validated['password']);
+        }
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        // 5. Simpan ke database
+        $user->save();
+
+        // 6. Kembali dengan membawa session 'success' untuk memunculkan notifikasi hijau
+        return Redirect::route('profile.edit')->with('success', 'Profil Anda berhasil diperbarui!');
     }
 
     /**
-     * Delete the user's account.
+     * Menghapus akun pengguna (Bawaan Breeze).
      */
     public function destroy(Request $request): RedirectResponse
     {

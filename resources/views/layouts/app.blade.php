@@ -139,8 +139,8 @@
             flex-shrink: 0;
         }
 
-        /* Cart Badge */
-        .nav-cart {
+        /* Riwayat Button (sebelumnya Cart) */
+        .nav-history {
             position: relative;
             text-decoration: none;
             font-size: 0.875rem;
@@ -154,12 +154,12 @@
             gap: 6px;
         }
 
-        .nav-cart:hover {
+        .nav-history:hover {
             color: var(--brand-ocean);
             background: rgba(13,59,94,0.06);
         }
 
-        .cart-icon {
+        .history-icon {
             width: 18px;
             height: 18px;
             stroke: currentColor;
@@ -426,16 +426,14 @@
 
             {{-- Logo --}}
             <a href="/" class="nav-logo">
-                <div class="nav-logo-icon">
                     {{-- Compass icon --}}
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.535 6.464l-4.243 1.415-1.414 4.243-1.414-4.243-4.243-1.415 4.243-1.414 1.414-4.243 1.414 4.243z"/>
-                    </svg>
-                </div>
+                    <img src="{{ asset('/images/logo_web.jpeg') }}" 
+                     alt="Logo {{ config('app.name') }}" 
+                     style="height: 36px; width: auto; object-fit: contain;">
                 <span class="nav-logo-text">{{ config('app.name', 'Travel Website') }}</span>
             </a>
 
-            {{-- Nav Links --}}
+{{-- Nav Links --}}
             <div class="nav-links">
                 <a href="/" class="nav-link">Beranda</a>
                 <a href="/destinasi" class="nav-link">Destinasi</a>
@@ -445,22 +443,28 @@
                 <div class="nav-divider"></div>
 
                 @auth
-                    {{-- Keranjang --}}
-                    <a href="/keranjang" class="nav-cart">
-                        <svg class="cart-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-                            <line x1="3" y1="6" x2="21" y2="6"/>
-                            <path d="M16 10a4 4 0 01-8 0"/>
+                    {{-- Tambahan Tombol Dashboard untuk semua user yang sudah login --}}
+                    <a href="{{ route('dashboard') }}" class="nav-link" style="font-weight: 500;">
+                        Dashboard Saya
+                    </a>
+
+                    {{-- Riwayat Pembelian dengan Ikon Struk Belanja Baru --}}
+                    <a href="{{ route('transactions.history') }}" class="nav-history">
+                        <svg class="history-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 7h6"></path>
+                            <path d="M9 11h6"></path>
+                            <path d="M9 15h4"></path>
+                            <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16l-3-2-2 2-2-2-2 2-2-2-3 2z"></path>
                         </svg>
-                        Keranjang
+                        Riwayat Pembelian
                     </a>
 
                     @if(auth()->user()->isAdmin())
-                        <a href="/admin/dashboard" class="badge-admin">Admin</a>
+                        <a href="/dashboard" class="badge-admin">Admin</a>
                     @endif
 
                     @if(auth()->user()->isSeller())
-                        <a href="/seller/dashboard" class="badge-seller">Seller</a>
+                        <a href="/dashboard" class="badge-seller">Seller</a>
                     @endif
 
                     <form method="POST" action="/logout" style="display:inline;">
@@ -471,8 +475,7 @@
                     <a href="/login" class="btn-login">Masuk</a>
                     <a href="/register" class="btn-register">Daftar Gratis</a>
                 @endauth
-            </div>
-        </div>
+            </div>       
     </nav>
 
     {{-- ──────────────────────────────── FLASH MESSAGES ──── --}}
@@ -513,9 +516,6 @@
                 <h4>Jelajahi</h4>
                 <ul>
                     <li><a href="/destinasi">Semua Destinasi</a></li>
-                    <li><a href="/destinasi?kategori=alam">Wisata Alam</a></li>
-                    <li><a href="/destinasi?kategori=budaya">Wisata Budaya</a></li>
-                    <li><a href="/destinasi?kategori=kuliner">Wisata Kuliner</a></li>
                 </ul>
             </div>
 
@@ -525,7 +525,7 @@
                 <ul>
                     <li><a href="/toko">Toko Produk</a></li>
                     <li><a href="/berita">Berita Travel</a></li>
-                    <li><a href="/tentang">Tentang Kami</a></li>
+                    <li><a href="/tentang-kami">Tentang Kami</a></li>
                     <li><a href="/layanan">Pusat Bantuan</a></li>
                 </ul>
             </div>
@@ -534,9 +534,7 @@
             <div class="footer-col">
                 <h4>Legal</h4>
                 <ul>
-                    <li><a href="/privasi">Kebijakan Privasi</a></li>
-                    <li><a href="/syarat">Syarat & Ketentuan</a></li>
-                    <li><a href="/cookie">Kebijakan Cookie</a></li>
+                    <li><a href="/kebijakan-privasi">Kebijakan Privasi</a></li>
                 </ul>
             </div>
 
@@ -545,8 +543,6 @@
         <div class="footer-bottom">
             <span>© {{ date('Y') }} {{ config('app.name', 'Travel Website') }}. Seluruh hak dilindungi.</span>
             <div style="display:flex; gap:1.5rem;">
-                <a href="/privasi">Privasi</a>
-                <a href="/syarat">Syarat</a>
                 <a href="/kontak">Kontak</a>
             </div>
         </div>

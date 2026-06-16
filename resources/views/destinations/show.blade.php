@@ -2,64 +2,187 @@
 
 @section('title', $destination->name)
 
+@push('styles')
+<style>
+    /* ── NAVIGASI KEMBALI ────────────────────────────────────── */
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #4A5568;
+        text-decoration: none;
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        transition: all 0.2s ease;
+    }
+
+    .btn-back:hover {
+        color: var(--brand-ocean);
+        transform: translateX(-4px); 
+    }
+
+    /* ── WADAH UTAMA ─────────────────────────────────────────── */
+    .dest-detail-wrapper {
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 10px 40px rgba(13,59,94,0.05);
+        overflow: hidden;
+    }
+
+    /* ── GAMBAR HERO ─────────────────────────────────────────── */
+    .dest-hero {
+        height: 450px;
+        width: 100%;
+        position: relative;
+        background: var(--brand-mist);
+    }
+
+    .dest-hero img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .dest-hero-fallback {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, var(--brand-sky), var(--brand-ocean));
+        font-size: 5rem;
+    }
+
+    /* ── KONTEN DETAIL ───────────────────────────────────────── */
+    .dest-content-area {
+        padding: 3.5rem 4rem;
+    }
+
+    .badge-category {
+        display: inline-block;
+        background: rgba(26,111,168,0.1);
+        color: var(--brand-sky);
+        padding: 0.4rem 1.25rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+    }
+
+    .title-large {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 3rem;
+        color: var(--brand-ink);
+        margin: 0 0 0.5rem;
+        line-height: 1.2;
+    }
+
+    .location-text {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--brand-coral);
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 2.5rem;
+    }
+
+    .desc-text {
+        color: #4A5568;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        margin-bottom: 3.5rem;
+    }
+
+    /* ── BAGIAN PETA ─────────────────────────────────────────── */
+    .map-wrapper {
+        border-top: 1px solid rgba(13,59,94,0.1);
+        padding-top: 3rem;
+    }
+
+    .map-wrapper h2 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.25rem;
+        color: var(--brand-ink);
+        margin-bottom: 1.5rem;
+    }
+
+    .map-box {
+        width: 100%;
+        height: 450px;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        border: 1px solid rgba(13,59,94,0.08);
+    }
+</style>
+@endpush
+
 @section('content')
 
-    <a href="/destinasi" class="text-blue-600 hover:underline text-sm">← Kembali ke Destinasi</a>
+    {{-- Tombol Kembali --}}
+    <a href="/destinasi" class="btn-back">
+        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Kembali ke Daftar Destinasi
+    </a>
 
-    <div class="bg-white rounded-2xl shadow-lg overflow-hidden mt-4">
-
-        {{-- Hero Image --}}
-        <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-64 flex items-center justify-center text-8xl">
-            🏝️
+    <article class="dest-detail-wrapper">
+        <div class="dest-hero">
+            @if($destination->image)
+                <img src="{{ asset('storage/' . $destination->image) }}" alt="Foto {{ $destination->name }}">
+            @else
+                <div class="dest-hero-fallback">🏝️</div>
+            @endif
         </div>
 
-        <div class="p-8">
-            <span class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
-                {{ $destination->category }}
-            </span>
-            <h1 class="text-4xl font-bold text-gray-800 mt-3">{{ $destination->name }}</h1>
-            <p class="text-gray-500 mt-2 text-lg">📍 {{ $destination->location }}</p>
-
-            <div class="mt-6 text-gray-700 leading-relaxed">
-                {{ $destination->description }}
+        <div class="dest-content-area">
+            <span class="badge-category">{{ $destination->category }}</span>
+            <h1 class="title-large">{{ $destination->name }}</h1>
+            
+            <div class="location-text">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"></path>
+                </svg>
+                <span>{{ $destination->location }}</span>
             </div>
 
-            {{-- WADAH PETA DITAMBAHKAN DI SINI --}}
+            <div class="desc-text">
+                {!! nl2br(e($destination->description)) !!}
+            </div>
+
             @if($destination->latitude && $destination->longitude)
-                <div class="mt-8 border-t border-gray-100 pt-8">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Lokasi di Peta</h2>
-                    <div id="map" class="w-full h-96 rounded-xl shadow border border-gray-200 relative z-0"></div>
+                <div class="map-wrapper">
+                    <h2>Lokasi di Peta</h2>
+                    <div id="map" class="map-box"></div>
                 </div>
             @endif
         </div>
-    </div>
+    </article>
 
-@endsection {{-- Section Content Ditutup Di Sini --}}
+@endsection
 
-
-{{-- Script untuk menjalankan Leaflet --}}
 @push('scripts')
 @if($destination->latitude && $destination->longitude)
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // 1. Ambil koordinat dari database
         var lat = {{ $destination->latitude }};
         var lng = {{ $destination->longitude }};
+        var map = L.map('map').setView([lat, lng], 13);
 
-        // 2. Inisialisasi peta dan pusatkan ke koordinat destinasi
-        var map = L.map('map').setView([lat, lng], 13); // Angka 13 adalah level zoom
-
-        // 3. Tambahkan layer peta dari OpenStreetMap
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        // 4. Tambahkan Marker (Pin)
         L.marker([lat, lng]).addTo(map)
-            .bindPopup("<b>{{ $destination->name }}</b><br>{{ $destination->location }}") // Teks saat pin diklik
+            .bindPopup("<b>{{ $destination->name }}</b><br>{{ $destination->location }}")
             .openPopup();
     });
 </script>
 @endif
-@endpush {{-- Push Scripts Ditutup Di Sini --}}
+@endpush
