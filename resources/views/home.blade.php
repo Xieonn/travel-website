@@ -5,8 +5,8 @@
 @section('content')
 
     {{-- HERO SECTION --}}
-    <section class="relative w-full h-[550px] md:h-[650px] flex items-center bg-cover bg-center rounded-[32px] overflow-hidden shadow-2xl mb-16" 
-             style="background-image: url('{{ asset('images/background_home.png') }}');">
+    <section class="relative w-full h-[550px] md:h-[650px] flex items-center rounded-[32px] overflow-hidden shadow-2xl mb-16" 
+             style="background-image: url('{{ asset('images/background_home.png') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
         
         {{-- Overlay Gradient dengan hint dari brand-ink agar menyatu dengan tema gelap --}}
         <div class="absolute inset-0 bg-gradient-to-r from-[#0A1628]/80 via-[#0A1628]/40 to-transparent"></div> 
@@ -68,11 +68,13 @@
             @forelse($beritaTerbaru as $item)
                 <div class="group bg-white rounded-2xl shadow hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
                     <div class="relative overflow-hidden h-52">
-                        @if($item->image)
+                        @if($item->image && file_exists(storage_path('app/public/' . $item->image)))
                             <img src="{{ asset('storage/' . $item->image) }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                         @else
-                            {{-- Fallback menggunakan Brand Mist --}}
-                            <div class="bg-[#F2F6FA] h-full flex items-center justify-center text-5xl">📰</div>
+                            <div class="w-full h-full bg-gradient-to-br from-[#0D3B5E] to-[#1A6FA8] flex flex-col items-center justify-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                                <span style="font-size:11px; color:rgba(255,255,255,0.5); font-weight:600; letter-spacing:0.05em;">BERITA TRAVEL</span>
+                            </div>
                         @endif
                         <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest text-[#0D3B5E]">
                             {{ $item->created_at->format('d M Y') }}
@@ -106,10 +108,15 @@
             @forelse($destinations as $destination)
                 <div class="group bg-white rounded-2xl shadow hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
                     <div class="relative overflow-hidden h-52">
-                        @if($destination->image)
+                        @if($destination->image && file_exists(storage_path('app/public/' . $destination->image)))
                             <img src="{{ asset('storage/' . $destination->image) }}" alt="Foto {{ $destination->name }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                         @else
-                            <div class="bg-[#F2F6FA] h-full flex items-center justify-center text-5xl">🏝️</div>
+                            <div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110 relative" style="background-image:url('{{ asset('images/background_home.png') }}')">
+                                <div class="absolute inset-0 bg-[#0D3B5E]/50"></div>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>
+                                </div>
+                            </div>
                         @endif
                     </div>
                     <div class="p-5">
