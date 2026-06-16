@@ -33,22 +33,20 @@
                 
                 {{-- Thumbnail Gambar / Backup Emoji --}}
                 <div class="rounded-xl overflow-hidden aspect-video flex items-center justify-center text-4xl mb-3 bg-gray-100 relative">
-                    @if($post->thumbnail)
-                        {{-- Jika ada gambar hasil upload --}}
+                    @if($post->thumbnail && file_exists(public_path('storage/' . $post->thumbnail)))
                         <img src="{{ asset('storage/' . $post->thumbnail) }}"
                              alt="{{ $post->title }}"
                              class="w-full h-full object-cover group-hover:scale-105 transition duration-300"/>
                     @else
-                        {{-- Jika gambar kosong, tampilkan background & emoji sesuai kategori --}}
                         <div class="w-full h-full flex items-center justify-center 
                             @if($post->category == 'Tips') bg-blue-100
-                            @elseif($post->category == 'Destinasi') bg-green-100
+                            @elseif($post->category == 'Destinasi' || $post->category == 'Wisata Alam') bg-green-100
                             @elseif($post->category == 'Petualangan') bg-orange-100
                             @elseif($post->category == 'Kuliner') bg-red-100
                             @else bg-purple-100 @endif">
                             
                             @if($post->category == 'Tips') 💡
-                            @elseif($post->category == 'Destinasi') 🏝️
+                            @elseif($post->category == 'Destinasi' || $post->category == 'Wisata Alam') 🏝️
                             @elseif($post->category == 'Petualangan') 🏔️
                             @elseif($post->category == 'Kuliner') 🍜
                             @else 📰 @endif
