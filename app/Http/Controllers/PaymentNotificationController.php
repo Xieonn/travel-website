@@ -37,10 +37,13 @@ class PaymentNotificationController extends Controller
                 if ($firstTrx->status !== 'paid') {
                     DB::transaction(function () use ($transactions) {
                         foreach ($transactions as $trx) {
-                            // Kurangi stok dengan aman (tidak bisa negatif)
                             $product = Product::find($trx->product_id);
                             if ($product) {
+                                // Kurangi stok (tidak bisa negatif)
                                 $product->decrementStock($trx->quantity);
+
+                                // Tambah jumlah terjual
+                                $product->increment('sold_count', $trx->quantity);
                             }
 
                             // Tandai transaksi sebagai paid
