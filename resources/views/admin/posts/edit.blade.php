@@ -51,23 +51,23 @@
 
                 {{-- Input Thumbnail / Gambar --}}
                 <div class="mb-5">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Thumbnail Berita</label>
+                    <label for="image" class="block text-sm font-semibold text-gray-700 mb-2">Thumbnail Berita</label>
                     
                     {{-- Preview Gambar Lama --}}
                     <div class="mb-3">
                         <p class="text-xs text-gray-400 mb-1">Gambar saat ini:</p>
-                        @if($post->thumbnail)
-                            <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="Current Thumbnail" class="w-48 h-32 object-cover rounded-lg border border-gray-200 shadow-sm">
+                        @if($post->image)
+                            <img src="{{ asset('storage/' . $post->image) }}" alt="Current Image" class="w-48 h-32 object-cover rounded-lg border border-gray-200 shadow-sm">
                         @else
                             <div class="w-48 h-32 bg-yellow-100 rounded-lg flex items-center justify-center text-4xl border border-dashed border-gray-300">📰</div>
                         @endif
                     </div>
 
                     {{-- Upload Gambar Baru --}}
-                    <input type="file" name="thumbnail" id="thumbnail" accept="image/*"
+                    <input type="file" name="image" id="image" accept="image/*"
                            class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
                     <p class="text-xs text-gray-400 mt-1">Pilih file baru jika Anda ingin mengganti gambar di atas (Format: JPG, JPEG, PNG, WEBP).</p>
-                    @error('thumbnail')
+                    @error('image')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>

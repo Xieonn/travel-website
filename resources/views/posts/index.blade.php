@@ -33,8 +33,8 @@
                 
                 {{-- Thumbnail Gambar / Backup Emoji --}}
                 <div class="rounded-xl overflow-hidden aspect-video flex items-center justify-center text-4xl mb-3 bg-gray-100 relative">
-                    @if($post->thumbnail && file_exists(public_path('storage/' . $post->thumbnail)))
-                        <img src="{{ asset('storage/' . $post->thumbnail) }}"
+                    @if($post->image && file_exists(public_path('storage/' . $post->image)))
+                        <img src="{{ asset('storage/' . $post->image) }}"
                              alt="{{ $post->title }}"
                              class="w-full h-full object-cover group-hover:scale-105 transition duration-300"/>
                     @else

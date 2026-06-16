@@ -52,11 +52,11 @@
 
                 {{-- Input Thumbnail / Gambar --}}
                 <div class="mb-5">
-                    <label for="thumbnail" class="block text-sm font-semibold text-gray-700 mb-2">Thumbnail Berita</label>
-                    <input type="file" name="thumbnail" id="thumbnail" accept="image/*" required
+                    <label for="image" class="block text-sm font-semibold text-gray-700 mb-2">Thumbnail Berita</label>
+                    <input type="file" name="image" id="image" accept="image/*" required
                            class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
                     <p class="text-xs text-gray-400 mt-1">Format gambar wajib berupa: JPG, JPEG, PNG, atau WEBP (Maksimal 2MB).</p>
-                    @error('thumbnail')
+                    @error('image')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>

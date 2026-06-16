@@ -9,8 +9,8 @@
     <div class="bg-white rounded-2xl shadow-lg overflow-hidden mt-4">
         {{-- Hero Gambar / Backup Emoji --}}
         <div class="h-72 w-full flex items-center justify-center overflow-hidden bg-gray-100 relative">
-            @if($post->thumbnail && file_exists(public_path('storage/' . $post->thumbnail)))
-                <img src="{{ asset('storage/' . $post->thumbnail) }}" 
+            @if($post->image && file_exists(public_path('storage/' . $post->image)))
+                <img src="{{ asset('storage/' . $post->image) }}" 
                      alt="{{ $post->title }}" 
                      class="w-full h-full object-cover">
             @else

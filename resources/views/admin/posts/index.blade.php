@@ -81,10 +81,13 @@
                             
                             {{-- Thumbnail --}}
                             <td class="px-6 py-4">
-                                @if($item->thumbnail)
-                                    <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="Thumb {{ $item->title }}" class="w-20 h-14 object-cover rounded-lg border border-gray-100 shadow-sm">
+                                @if($item->image)
+                                    <img src="{{ asset('storage/' . $item->image) }}" alt="Image" class="w-20 h-14 object-cover rounded-md">
                                 @else
-                                    <div class="w-20 h-14 bg-gray-50 rounded-lg flex items-center justify-center text-xl border border-dashed border-gray-200 text-gray-400">📰</div>
+                                    {{-- Ikon bawaan jika berita tidak memiliki gambar --}}
+                                    <div class="w-20 h-14 bg-gray-50 rounded-lg flex items-center justify-center text-xl border border-dashed border-gray-200 text-gray-400">
+                                        📰
+                                    </div>
                                 @endif
                             </td>
                             

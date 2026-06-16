@@ -51,14 +51,14 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'category' => 'required|string|max:100',
-            'thumbnail' => 'nullable|image|max:2048', // Validasi untuk file gambar
+            'image' => 'nullable|image|max:2048', // Validasi untuk file gambar
         ]);
 
         $data = $request->only('title', 'content', 'category');
         $data['user_id'] = Auth::id();
 
-        if ($request->hasFile('thumbnail')) {
-            $data['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('image', 'public');
         }
 
         Post::create($data);
@@ -80,7 +80,7 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'category' => 'required|string|max:100',
-            'thumbnail' => 'nullable|image|max:2048', 
+            'image' => 'nullable|image|max:2048', 
         ]);
 
         // 2. Cari data berita yang ingin diedit
@@ -90,15 +90,15 @@ class PostController extends Controller
         $data = $request->only('title', 'content', 'category');
 
         // 4. Logika penanganan gambar JIKA admin mengunggah gambar baru
-        if ($request->hasFile('thumbnail')) {
+        if ($request->hasFile('image')) {
             
             // Hapus gambar lama dari folder public/storage jika sebelumnya ada gambar
-            if ($post->thumbnail && Storage::exists('public/' . $post->thumbnail)) {
-                Storage::delete('public/' . $post->thumbnail);
+            if ($post->image && Storage::exists('public/' . $post->image)) {
+                Storage::delete('public/' . $post->image);
             }
 
             // Simpan gambar baru ke folder public/thumbnails
-            $data['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
+            $data['image'] = $request->file('image')->store('image', 'public');
         }
 
         // 5. Lakukan update data ke database
@@ -114,8 +114,8 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         
         // Hapus file thumbnail jika ada
-        if ($post->thumbnail && Storage::exists('public/' . $post->thumbnail)) {
-            Storage::delete('public/' . $post->thumbnail);
+        if ($post->image && Storage::exists('public/' . $post->image)) {
+            Storage::delete('public/' . $post->image);
         }
         
         $post->delete();
