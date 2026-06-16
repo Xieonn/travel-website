@@ -55,8 +55,14 @@ class StoreController extends Controller
         }
 
         return view('products.show', compact(
-            'product', 'reviews', 'avgRating', 'reviewCount',
-            'ratingDistribution', 'userReview', 'image', 'hasPurchased'
+            'product',
+            'reviews',
+            'avgRating',
+            'reviewCount',
+            'ratingDistribution',
+            'userReview',
+            'image',
+            'hasPurchased'
         ));
     }
 
@@ -66,7 +72,7 @@ class StoreController extends Controller
             return redirect()->route('login')->with('error', 'Silakan login untuk memberikan ulasan.');
         }
 
-        // Hanya pembeli yang sudah lunas yang boleh review
+        // Hanya pembeli yang sudah lunas yang boleh memberikan review/ulasan
         $hasPurchased = \App\Models\Transaction::where('user_id', Auth::id())
             ->where('product_id', $product->id)
             ->where('status', 'paid')
