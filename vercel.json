@@ -20,16 +20,23 @@
       "dest": "/public/build/$1"
     },
     {
+      "src": "/storage/(.*)",
+      "dest": "/storage/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/api/index.php"
     }
   ],
   "env": {
     "APP_ENV": "production",
+    "APP_DEBUG": "false",
+    "LOG_CHANNEL": "stderr",
+    "LOG_LEVEL": "error",
+    "VIEW_COMPILED_PATH": "/tmp/storage/framework/views",
     "CACHE_STORE": "array",
     "SESSION_DRIVER": "cookie",
-    "LOG_CHANNEL": "stderr",
-    "VIEW_COMPILED_PATH": "/tmp/storage/framework/views",
+    "QUEUE_CONNECTION": "sync",
     "DATA_CACHE_DIR": "/tmp/storage/data"
   }
 }
