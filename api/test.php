@@ -3,11 +3,7 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-set_error_handler(function($errno, $errstr, $errfile, $errline) {
-    echo "[PHP ERROR $errno]: $errstr\n";
-    echo "  File: $errfile Line: $errline\n\n";
-    return true;
-});
+header('Content-Type: text/plain');
 
 echo "=== STEP 1: Load vendor/autoload.php ===\n";
 try {
@@ -32,8 +28,7 @@ try {
 
 echo "=== STEP 3: Make HTTP Kernel ===\n";
 try {
-    use Illuminate\Contracts\Http\Kernel;
-    $kernel = $app->make(Kernel::class);
+    $kernel = $app->make(\Illuminate\Contracts\Http\Kernel::class);
     echo "OK\n\n";
 } catch (Throwable $e) {
     echo "FAILED: " . $e->getMessage() . "\n";
@@ -42,13 +37,14 @@ try {
     die();
 }
 
-echo "=== STEP 4: Handle Request ===\n";
+echo "=== STEP 4: Handle Request (will render homepage) ===\n";
 try {
-    use Illuminate\Http\Request;
-    $request = Request::capture();
+    $request = \Illuminate\Http\Request::capture();
     $response = $kernel->handle($request);
-    echo "Status: " . $response->getStatusCode() . "\n";
-    $response->send();
+    echo "Status Code: " . $response->getStatusCode() . "\n";
+    echo "Content-Type: " . $response->headers->get('Content-Type') . "\n";
+    echo "\n--- Response Preview (first 500 chars) ---\n";
+    echo substr($response->getContent(), 0, 500) . "\n";
     $kernel->terminate($request, $response);
 } catch (Throwable $e) {
     echo "FAILED: " . $e->getMessage() . "\n";
