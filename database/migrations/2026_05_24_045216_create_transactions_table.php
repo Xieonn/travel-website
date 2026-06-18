@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->integer('quantity');
             $table->decimal('total_price', 10, 2);
-            $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
+            $table->string('status')->default('pending'); // values: pending, paid, cancelled
             $table->string('snap_token')->nullable(); // <-- TAMBAHKAN BARIS INI
             $table->timestamps();
         });

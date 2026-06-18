@@ -11,7 +11,7 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         // Cari seller pertama untuk dijadikan pemilik produk
-        $seller = User::role('seller')->first();
+        $seller = User::role('Seller')->first();
 
         $products = [
             // === 4 PRODUK DENGAN GAMBAR ASLI ===
