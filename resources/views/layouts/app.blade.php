@@ -401,9 +401,49 @@
             color: #991B1B;
         }
 
+        /* ── MOBILE MENU BUTTON ──────────────────────────────── */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--brand-ink);
+        }
+
+        .mobile-menu-btn svg {
+            width: 28px;
+            height: 28px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
         /* ── SCROLL NAV ──────────────────────────────────────── */
         @media (max-width: 900px) {
-            .nav-links { display: none; }
+            .nav-links { 
+                display: none; 
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(255,255,255,0.98);
+                backdrop-filter: blur(14px);
+                flex-direction: column;
+                align-items: stretch;
+                padding: 1.5rem;
+                gap: 1rem;
+                box-shadow: 0 8px 24px rgba(13,59,94,0.08);
+                border-top: 1px solid rgba(13,59,94,0.05);
+            }
+            .nav-links.active { display: flex; }
+            .mobile-menu-btn { display: block; }
+            .nav-divider { display: none; }
+            .btn-login, .btn-register, .btn-logout, .nav-history, .badge-admin, .badge-seller { 
+                text-align: center; justify-content: center; 
+            }
             .footer-top { grid-template-columns: 1fr 1fr; }
         }
 
@@ -433,8 +473,17 @@
                 <span class="nav-logo-text">{{ config('app.name', 'Travel Website') }}</span>
             </a>
 
-{{-- Nav Links --}}
-            <div class="nav-links">
+            {{-- Hamburger Button --}}
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
+                <svg viewBox="0 0 24 24">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+
+            {{-- Nav Links --}}
+            <div class="nav-links" id="navLinks">
                 <a href="/" class="nav-link">Beranda</a>
                 <a href="/destinasi" class="nav-link">Destinasi</a>
                 <a href="/toko" class="nav-link">Toko</a>
@@ -548,12 +597,19 @@
         </div>
     </footer>
 
-    {{-- ─────────────────────── SCROLL NAVBAR EFFECT ──── --}}
+    {{-- ─────────────────────── SCRIPT EFFECT ──── --}}
     <script>
         const nav = document.getElementById('mainNav');
         window.addEventListener('scroll', () => {
             nav.classList.toggle('scrolled', window.scrollY > 20);
         }, { passive: true });
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
     </script>
 
     @stack('scripts')
